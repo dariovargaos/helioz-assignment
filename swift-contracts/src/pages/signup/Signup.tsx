@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { useSignup } from "../../hooks/useSignup";
 import {
   Heading,
   FormControl,
@@ -26,6 +27,8 @@ import {
 export default function Signup() {
   const [showPassword, setShowPassword] = useState<boolean>(false);
 
+  const { signup, error, isPending } = useSignup();
+
   const {
     register,
     handleSubmit,
@@ -34,7 +37,7 @@ export default function Signup() {
   } = useForm();
 
   const onSubmit = (data) => {
-    console.log(data);
+    signup(data.email, data.password, data.displayName);
 
     reset();
   };
@@ -125,10 +128,17 @@ export default function Signup() {
               <Text color="red">{errors.displayName.message}</Text>
             )}
           </FormControl>
-
-          <Button type="submit" colorScheme="blackAlpha">
-            Signup
-          </Button>
+          {!isPending ? (
+            <Button type="submit" colorScheme="blackAlpha">
+              Signup
+            </Button>
+          ) : (
+            <Button
+              isLoading
+              loadingText="Signing up..."
+              colorScheme="blackAlpha"
+            ></Button>
+          )}
         </form>
       </Box>
     </Flex>

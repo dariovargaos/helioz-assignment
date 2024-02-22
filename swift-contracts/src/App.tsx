@@ -3,7 +3,9 @@ import {
   createRoutesFromElements,
   Route,
   RouterProvider,
+  Navigate,
 } from "react-router-dom";
+import { useAuthContext } from "./hooks/useAuthContext";
 
 //pages and layouts
 import SignupLoginLayout from "./layouts/SignupLoginLayout";
@@ -14,22 +16,35 @@ import Contracts from "./pages/contracts/Contracts";
 import Clients from "./pages/clients/Clients";
 
 function App() {
+  const { user, authIsReady } = useAuthContext();
   const router = createBrowserRouter(
     createRoutesFromElements(
       <Route>
         <Route element={<SignupLoginLayout />}>
-          <Route path="/signup" element={<Signup />} />
-          <Route path="/login" element={<Login />} />
+          <Route
+            path="/signup"
+            element={!user ? <Signup /> : <Navigate to="/contracts" />}
+          />
+          <Route
+            path="/login"
+            element={!user ? <Login /> : <Navigate to="/contracts" />}
+          />
         </Route>
 
         <Route element={<DashboardLayout />}>
-          <Route path="/contracts" element={<Contracts />} />
-          <Route path="/clients" element={<Clients />} />
+          <Route
+            path="/contracts"
+            element={user ? <Contracts /> : <Navigate to="/login" />}
+          />
+          <Route
+            path="/clients"
+            element={user ? <Clients /> : <Navigate to="login" />}
+          />
         </Route>
       </Route>
     )
   );
-  return <RouterProvider router={router} />;
+  return authIsReady && <RouterProvider router={router} />;
 }
 
 export default App;
