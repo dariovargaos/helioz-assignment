@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { Controller, useForm } from "react-hook-form";
-import Select from "react-select";
+import { useForm } from "react-hook-form";
+import { useFirestore } from "../../hooks/useFirestore";
 import {
   Box,
   Button,
@@ -18,6 +18,8 @@ import {
 } from "@chakra-ui/react";
 export default function Dashboard() {
   const [isOpenModal, setIsOpenModal] = useState<boolean>(false);
+  const [isPending, setIsPending] = useState<boolean>(false);
+  const { addDocument } = useFirestore("clients");
 
   const closeModal = () => {
     reset();
@@ -31,9 +33,17 @@ export default function Dashboard() {
     formState: { errors },
   } = useForm();
 
-  const onSubmit = (data) => {
-    console.log(data);
+  const onSubmit = async (data) => {
+    setIsPending(true);
 
+    try {
+      await addDocument(data);
+      console.log("Client added successfully.");
+    } catch (error) {
+      console.error("Error adding client:", error);
+    }
+
+    setIsPending(false);
     reset();
     closeModal();
   };
@@ -135,9 +145,13 @@ export default function Dashboard() {
                   <Text color="red">{errors.clientContactNumber.message}</Text>
                 )}
               </FormControl>
-              <Button type="submit" colorScheme="blackAlpha">
-                Submit
-              </Button>
+              {!isPending ? (
+                <Button type="submit" colorScheme="blackAlpha">
+                  Submit
+                </Button>
+              ) : (
+                <Button isLoading colorScheme="blackAlpha"></Button>
+              )}
             </form>
           </ModalBody>
         </ModalContent>
