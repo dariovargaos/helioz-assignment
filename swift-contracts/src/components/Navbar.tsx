@@ -1,9 +1,11 @@
 import { NavLink as RouterNavLink } from "react-router-dom";
 import { useAuthContext } from "../hooks/useAuthContext";
-import { Flex, Heading, Link, Text } from "@chakra-ui/react";
+import { useLogout } from "../hooks/useLogout";
+import { Button, Flex, Heading, Link, Text } from "@chakra-ui/react";
 
 export default function Navbar() {
   const { user } = useAuthContext();
+  const { logout, error, isPending } = useLogout();
   return (
     <Flex
       as="nav"
@@ -16,7 +18,7 @@ export default function Navbar() {
       <Heading as="h1">Swift Contracts</Heading>
       <Flex gap={5}>
         {user ? (
-          <>
+          <Flex align="center" gap={3}>
             <Text>Hello, {user.displayName}</Text>
             <Link as={RouterNavLink} to="/contracts">
               Contracts
@@ -24,7 +26,12 @@ export default function Navbar() {
             <Link as={RouterNavLink} to="/clients">
               Clients
             </Link>
-          </>
+            {!isPending ? (
+              <Button onClick={logout}>Logout</Button>
+            ) : (
+              <Button isLoading></Button>
+            )}
+          </Flex>
         ) : (
           <>
             <Link as={RouterNavLink} to="/login">

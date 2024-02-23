@@ -31,7 +31,7 @@ function App() {
           />
         </Route>
 
-        <Route element={<DashboardLayout />}>
+        <Route path="/" element={<DashboardLayout />}>
           <Route
             path="/contracts"
             element={user ? <Contracts /> : <Navigate to="/login" />}

@@ -12,6 +12,18 @@ const customTheme = extendTheme({
       },
     },
   },
+  components: {
+    Alert: {
+      variants: {
+        customSuccess: {
+          container: {
+            bg: "black",
+            color: "white",
+          },
+        },
+      },
+    },
+  },
 });
 
 ReactDOM.createRoot(document.getElementById("root")!).render(

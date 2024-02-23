@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { useLogin } from "../../hooks/useLogin";
 import {
   Heading,
   FormControl,
@@ -19,17 +20,16 @@ import { EmailIcon, LockIcon, ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
 
 export default function Login() {
   const [showPassword, setShowPassword] = useState<boolean>(false);
-
   const {
     register,
     handleSubmit,
     reset,
-
     formState: { errors },
   } = useForm();
+  const { login, error, isPending } = useLogin();
 
   const onSubmit = (data) => {
-    console.log(data);
+    login(data.email, data.password);
 
     reset();
   };
@@ -85,7 +85,7 @@ export default function Login() {
                   variant="ghost"
                   onClick={handleClick}
                 >
-                  {showPassword ? <ViewOffIcon /> : <ViewIcon />}
+                  {showPassword ? <ViewIcon /> : <ViewOffIcon />}
                 </Button>
               </InputRightElement>
             </InputGroup>
@@ -93,10 +93,14 @@ export default function Login() {
               <Text color="red">{errors.password.message}</Text>
             )}
           </FormControl>
-
-          <Button type="submit" colorScheme="blackAlpha">
-            Login
-          </Button>
+          {error && <Text color="red">{error.message}</Text>}
+          {!isPending ? (
+            <Button type="submit" colorScheme="blackAlpha">
+              Login
+            </Button>
+          ) : (
+            <Button isLoading></Button>
+          )}
         </form>
       </Box>
     </Flex>
