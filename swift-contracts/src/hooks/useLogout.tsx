@@ -38,6 +38,7 @@ export const useLogout = (): LogoutExports => {
       toast({
         title: "Logged out.",
         status: "success",
+        variant: "customSuccess",
         duration: 3000,
         isClosable: true,
       });

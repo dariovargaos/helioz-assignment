@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link as RouterLink } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { useSignup } from "../../hooks/useSignup";
 import {
@@ -12,6 +13,7 @@ import {
   InputGroup,
   InputLeftElement,
   InputRightElement,
+  Link,
   Text,
 } from "@chakra-ui/react";
 
@@ -128,6 +130,7 @@ export default function Signup() {
               <Text color="red">{errors.displayName.message}</Text>
             )}
           </FormControl>
+          {error && <Text color="red">{error.message}</Text>}
           {!isPending ? (
             <Button type="submit" colorScheme="blackAlpha">
               Signup
@@ -140,6 +143,9 @@ export default function Signup() {
             ></Button>
           )}
         </form>
+        <Link as={RouterLink} to="/login" color="black">
+          Signed up already? <b>Login here.</b>
+        </Link>
       </Box>
     </Flex>
   );

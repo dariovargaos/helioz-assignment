@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link as RouterLink } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { useLogin } from "../../hooks/useLogin";
 import {
@@ -12,6 +13,7 @@ import {
   InputGroup,
   InputLeftElement,
   InputRightElement,
+  Link,
   Text,
 } from "@chakra-ui/react";
 
@@ -102,6 +104,9 @@ export default function Login() {
             <Button isLoading></Button>
           )}
         </form>
+        <Link as={RouterLink} to="/signup" color="black">
+          Not signed up yet? <b>Signup here.</b>
+        </Link>
       </Box>
     </Flex>
   );

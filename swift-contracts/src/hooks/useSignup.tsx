@@ -61,6 +61,8 @@ export const useSignup = () => {
       setIsPending(false);
       return;
     }
+    setError(null);
+    setIsPending(true);
 
     //sign the user up
     try {
@@ -97,6 +99,7 @@ export const useSignup = () => {
         title: "Welcome!",
         description: "We have created account for you.",
         status: "success",
+        variant: "customSuccess",
         duration: 3000,
         isClosable: true,
       });
