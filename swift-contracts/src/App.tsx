@@ -31,14 +31,14 @@ function App() {
           />
         </Route>
 
-        <Route path="/" element={<DashboardLayout />}>
+        <Route element={<DashboardLayout />}>
           <Route
             path="/contracts"
             element={user ? <Contracts /> : <Navigate to="/login" />}
           />
           <Route
             path="/clients"
-            element={user ? <Clients /> : <Navigate to="login" />}
+            element={user ? <Clients /> : <Navigate to="/login" />}
           />
         </Route>
       </Route>

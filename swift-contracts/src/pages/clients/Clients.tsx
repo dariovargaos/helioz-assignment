@@ -1,161 +1,77 @@
 import { useState } from "react";
-import { useForm } from "react-hook-form";
+import { useCollection } from "../../hooks/useCollection";
 import { useFirestore } from "../../hooks/useFirestore";
-import {
-  Box,
-  Button,
-  Flex,
-  FormControl,
-  FormLabel,
-  Input,
-  Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalHeader,
-  ModalBody,
-  ModalCloseButton,
-  Text,
-} from "@chakra-ui/react";
-export default function Dashboard() {
+import { Box, Button, Flex, Heading, Text } from "@chakra-ui/react";
+
+//components
+import AddClientModal from "./AddClientModal";
+
+interface Client {
+  id: string;
+  clientFirstName: string;
+  clientLastName: string;
+  clientIdNumber: string;
+  clientAddress: string;
+  clientEmail: string;
+  clientContactNumber: string;
+}
+
+export default function Clients() {
   const [isOpenModal, setIsOpenModal] = useState<boolean>(false);
-  const [isPending, setIsPending] = useState<boolean>(false);
-  const { addDocument } = useFirestore("clients");
-
-  const closeModal = () => {
-    reset();
-    setIsOpenModal(false);
-  };
-
+  const { deleteDocument } = useFirestore("clients");
+  const collectionResult = useCollection("clients");
   const {
-    register,
-    handleSubmit,
-    reset,
-    formState: { errors },
-  } = useForm();
-
-  const onSubmit = async (data) => {
-    setIsPending(true);
-
-    try {
-      await addDocument(data);
-      console.log("Client added successfully.");
-    } catch (error) {
-      console.error("Error adding client:", error);
-    }
-
-    setIsPending(false);
-    reset();
-    closeModal();
+    data: clients,
+    error,
+    isLoading,
+  } = collectionResult as {
+    data: Client[] | undefined;
   };
+
+  console.log(clients);
+
   return (
     <Box as="main" p={2}>
-      <Flex justify="flex-end">
+      <Flex justify="flex-end" mb={3}>
         <Button onClick={() => setIsOpenModal(true)} colorScheme="blackAlpha">
           Add Client +
         </Button>
       </Flex>
 
-      <Box>LISTA SVIH KLIJENATA</Box>
+      {clients?.map((client) => (
+        <Flex
+          key={client.id}
+          p="20px"
+          boxShadow="base"
+          borderLeft="4px solid black"
+          mb={3}
+          align="center"
+          justify="space-between"
+        >
+          <Heading size="md">
+            {client.clientFirstName} {client.clientLastName}
+          </Heading>
+          <Text color="gray.500">ID: {client.clientIdNumber}</Text>
+          <Box w="20%" wordBreak="break-word">
+            <Text color="gray.500">Address: {client.clientAddress}</Text>
+          </Box>
+          <Box w="20%" wordBreak="break-word">
+            <Text color="gray.500">Email: {client.clientEmail}</Text>
+          </Box>
+          <Box w="20%" wordBreak="break-word">
+            <Text color="gray.500">Contact: {client.clientContactNumber}</Text>
+          </Box>
 
-      <Modal isOpen={isOpenModal} onClose={closeModal} isCentered>
-        <ModalOverlay />
-        <ModalContent>
-          <ModalHeader>New Client</ModalHeader>
-          <ModalCloseButton />
-          <ModalBody>
-            <form onSubmit={handleSubmit(onSubmit)}>
-              <FormControl>
-                <FormLabel>Name</FormLabel>
-                <Input
-                  {...register("clientName", {
-                    required: {
-                      value: true,
-                      message: "Name is required.",
-                    },
-                  })}
-                  type="text"
-                />
-                {errors.clientName?.message && (
-                  <Text color="red">{errors.clientName.message}</Text>
-                )}
-              </FormControl>
+          <Button onClick={() => deleteDocument(client.id)} colorScheme="red">
+            Delete Client
+          </Button>
+        </Flex>
+      ))}
 
-              <FormControl>
-                <FormLabel>ID Number</FormLabel>
-                <Input
-                  {...register("clientIdNumber", {
-                    required: {
-                      value: true,
-                      message: "ID is required.",
-                    },
-                  })}
-                  type="number"
-                />
-                {errors.clientIdNumber?.message && (
-                  <Text color="red">{errors.clientIdNumber.message}</Text>
-                )}
-              </FormControl>
-
-              <FormControl>
-                <FormLabel>Address</FormLabel>
-                <Input
-                  {...register("clientAddress", {
-                    required: {
-                      value: true,
-                      message: "Address is required.",
-                    },
-                  })}
-                  type="text"
-                />
-                {errors.clientAddress?.message && (
-                  <Text color="red">{errors.clientAddress.message}</Text>
-                )}
-              </FormControl>
-              <FormControl>
-                <FormLabel>Email</FormLabel>
-                <Input
-                  {...register("clientEmail", {
-                    required: {
-                      value: true,
-                      message: "Email is required.",
-                    },
-                    pattern: {
-                      value: /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/,
-                      message: "Invalid email address",
-                    },
-                  })}
-                  type="email"
-                />
-                {errors.clientEmail?.message && (
-                  <Text color="red">{errors.clientEmail.message}</Text>
-                )}
-              </FormControl>
-              <FormControl>
-                <FormLabel>Contact number</FormLabel>
-                <Input
-                  {...register("clientContactNumber", {
-                    required: {
-                      value: true,
-                      message: "Contact number is required.",
-                    },
-                  })}
-                  type="number"
-                />
-                {errors.clientContactNumber?.message && (
-                  <Text color="red">{errors.clientContactNumber.message}</Text>
-                )}
-              </FormControl>
-              {!isPending ? (
-                <Button type="submit" colorScheme="blackAlpha">
-                  Submit
-                </Button>
-              ) : (
-                <Button isLoading colorScheme="blackAlpha"></Button>
-              )}
-            </form>
-          </ModalBody>
-        </ModalContent>
-      </Modal>
+      <AddClientModal
+        isOpenModal={isOpenModal}
+        setIsOpenModal={() => setIsOpenModal(false)}
+      />
     </Box>
   );
 }
