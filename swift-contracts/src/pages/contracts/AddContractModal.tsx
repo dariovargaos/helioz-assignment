@@ -214,14 +214,16 @@ export default function AddContractModal({
                 <Controller
                   name="contractDurationInUnit"
                   control={control}
-                  rules={{ required: "Please select days, months or years." }}
+                  rules={{
+                    required: "Please select day(s), month(s) or year(s).",
+                  }}
                   render={({ field }) => (
                     <Select
                       {...field}
                       options={[
-                        { value: "days", label: "Days" },
-                        { value: "months", label: "Months" },
-                        { value: "years", label: "Years" },
+                        { value: "day(s)", label: "Day(s)" },
+                        { value: "month(s)", label: "Month(s)" },
+                        { value: "year(s)", label: "Year(s)" },
                       ]}
                     />
                   )}
