@@ -51,14 +51,7 @@ export const useFirestore = (collectionName: string) => {
       return addedDocumentRef;
     },
     onSuccess: () => {
-      toast({
-        title: "Client added.",
-        description: "Successfully added client.",
-        status: "success",
-        variant: "customSuccess",
-        duration: 5000,
-        isClosable: true,
-      });
+      console.log("Document added successfully.");
       queryClient.invalidateQueries({ queryKey: [collectionName] });
     },
     onError: (error) => {
@@ -83,13 +76,7 @@ export const useFirestore = (collectionName: string) => {
       await deleteDoc(doc(collectionRef, id));
     },
     onSuccess: () => {
-      toast({
-        title: "Document deleted.",
-        description: "Successfully deleted the document.",
-        status: "success",
-        duration: 5000,
-        isClosable: true,
-      });
+      console.log("Document deleted successfully.");
       queryClient.invalidateQueries({ queryKey: [collectionName] });
     },
     onError: (error) => {

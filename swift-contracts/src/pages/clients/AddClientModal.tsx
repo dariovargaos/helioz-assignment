@@ -53,7 +53,6 @@ export default function AddClientModal({
     try {
       await addDocument(data);
       console.log("Client added successfully.");
-      refetch();
     } catch (error) {
       console.error("Error adding client:", error);
     }
