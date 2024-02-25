@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link as RouterLink } from "react-router-dom";
 import { useCollection } from "../../hooks/useCollection";
 import {
   Box,
@@ -8,6 +9,7 @@ import {
   CardBody,
   CardFooter,
   Flex,
+  Link,
   SimpleGrid,
   Text,
   Heading,
@@ -54,20 +56,28 @@ export default function Dashboard() {
         {contracts?.length === 0 && <Text>No contracts yet!</Text>}
         <SimpleGrid spacing={8} minChildWidth="250px">
           {contracts?.map((contract) => (
-            <Card key={contract.id} boxShadow="base" wordBreak="break-word">
-              <CardHeader>
-                <Heading size="md">{contract.name}</Heading>
-              </CardHeader>
-              <CardBody>
-                <Text>
-                  Date created: {contract.createdAt.toDate().toDateString()}
-                </Text>
-              </CardBody>
-              <Divider />
-              <CardFooter>
-                <Text>{contract.details.substring(0, 100)}...</Text>
-              </CardFooter>
-            </Card>
+            <Link
+              as={RouterLink}
+              key={contract.id}
+              to={`/contracts/${contract.id}`}
+              boxShadow="base"
+              _hover={{ textDecoration: "none" }}
+            >
+              <Card wordBreak="break-word">
+                <CardHeader>
+                  <Heading size="md">{contract.name}</Heading>
+                </CardHeader>
+                <CardBody>
+                  <Text>
+                    Date created: {contract.createdAt.toDate().toDateString()}
+                  </Text>
+                </CardBody>
+                <Divider />
+                <CardFooter>
+                  <Text>{contract.details.substring(0, 100)}...</Text>
+                </CardFooter>
+              </Card>
+            </Link>
           ))}
         </SimpleGrid>
       </Box>

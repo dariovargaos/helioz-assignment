@@ -14,6 +14,9 @@ export default function Navbar() {
       p={2}
       align="center"
       justify="space-between"
+      position="sticky"
+      top="0"
+      zIndex={1}
     >
       <Heading as="h1">Swift Contracts</Heading>
       <Flex gap={5}>

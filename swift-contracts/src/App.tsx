@@ -13,6 +13,7 @@ import Signup from "./pages/signup/Signup";
 import Login from "./pages/login/Login";
 import DashboardLayout from "./layouts/DashboardLayout";
 import Contracts from "./pages/contracts/Contracts";
+import ContractSummary from "./pages/contracts/ContractSummary";
 import Clients from "./pages/clients/Clients";
 
 function App() {
@@ -35,6 +36,10 @@ function App() {
           <Route
             path="/contracts"
             element={user ? <Contracts /> : <Navigate to="/login" />}
+          />
+          <Route
+            path="/contracts/:id"
+            element={user ? <ContractSummary /> : <Navigate to="/login" />}
           />
           <Route
             path="/clients"
