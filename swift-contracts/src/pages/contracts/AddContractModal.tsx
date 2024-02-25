@@ -127,7 +127,7 @@ export default function AddContractModal({
       closeModal();
       toast({
         title: "Contract added.",
-        description: "Successfully added client.",
+        description: "Successfully added contract.",
         status: "success",
         variant: "customSuccess",
         duration: 5000,
