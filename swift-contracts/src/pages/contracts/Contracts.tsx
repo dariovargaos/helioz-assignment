@@ -15,7 +15,6 @@ import {
   Heading,
   Divider,
   Input,
-  Spacer,
   FormLabel,
 } from "@chakra-ui/react";
 
@@ -139,7 +138,10 @@ export default function Contracts() {
             >
               <Card wordBreak="break-word">
                 <CardHeader>
-                  <Heading size="md">{contract.name}</Heading>
+                  <Heading size="md">
+                    {contract.name.charAt(0).toUpperCase() +
+                      contract.name.slice(1)}
+                  </Heading>
                 </CardHeader>
                 <CardBody>
                   <Text>

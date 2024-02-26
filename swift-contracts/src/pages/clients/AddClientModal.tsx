@@ -13,6 +13,7 @@ import {
   ModalBody,
   ModalCloseButton,
   Text,
+  useToast,
 } from "@chakra-ui/react";
 
 interface ClientModalProps {
@@ -42,6 +43,8 @@ export default function AddClientModal({
     formState: { errors },
   } = useForm<ClientFormFields>();
 
+  const toast = useToast();
+
   const closeModal = () => {
     reset();
     setIsOpenModal();
@@ -50,16 +53,40 @@ export default function AddClientModal({
   const onSubmit = async (data: ClientFormFields) => {
     setIsPending(true);
 
+    const client = {
+      firstName: data.clientFirstName,
+      lastName: data.clientLastName,
+      idNumber: data.clientIdNumber,
+      adrees: data.clientAddress,
+      email: data.clientEmail,
+      contactNumber: data.clientContactNumber,
+    };
+
     try {
-      await addDocument(data);
+      await addDocument(client);
+      reset();
+      closeModal();
+      setIsPending(false);
+      toast({
+        title: "Client added.",
+        description: "Successfully added client.",
+        status: "success",
+        variant: "customSuccess",
+        duration: 5000,
+        isClosable: true,
+      });
       console.log("Client added successfully.");
     } catch (error) {
       console.error("Error adding client:", error);
+      setIsPending(false);
+      toast({
+        title: "Error adding client.",
+        description: `There was an error, ${error}`,
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+      });
     }
-
-    setIsPending(false);
-    reset();
-    closeModal();
   };
   return (
     <Modal isOpen={isOpenModal} onClose={closeModal} isCentered>
@@ -147,8 +174,12 @@ export default function AddClientModal({
               <Input
                 {...register("clientContactNumber", {
                   required: "Contact number is required.",
+                  pattern: {
+                    value: /^[0-9]+$/, // Only allow numbers
+                    message: "Invalid contact number.",
+                  },
                 })}
-                type="number"
+                type="text"
               />
               {errors.clientContactNumber?.message && (
                 <Text color="red">{errors.clientContactNumber.message}</Text>

@@ -59,7 +59,6 @@ export const useFirestore = (collectionName: string) => {
         title: "Error",
         description: `An error occurred: ${error.message}`,
         status: "error",
-        variant: "customSuccess",
         duration: 5000,
         isClosable: true,
       });

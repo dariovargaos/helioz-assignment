@@ -135,6 +135,13 @@ export default function AddContractModal({
       });
     } catch (error) {
       console.error("Error adding contract:", error);
+      toast({
+        title: "Error adding contract.",
+        description: `There was an error, ${error}`,
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+      });
     }
   };
   return (
