@@ -15,12 +15,14 @@ import DashboardLayout from "./layouts/DashboardLayout";
 import Contracts from "./pages/contracts/Contracts";
 import ContractSummary from "./pages/contracts/ContractSummary";
 import Clients from "./pages/clients/Clients";
+import Home from "./pages/home/Home";
 
 function App() {
   const { user, authIsReady } = useAuthContext();
   const router = createBrowserRouter(
     createRoutesFromElements(
       <Route>
+        <Route path="/" element={<Home />} />
         <Route element={<SignupLoginLayout />}>
           <Route
             path="/signup"
