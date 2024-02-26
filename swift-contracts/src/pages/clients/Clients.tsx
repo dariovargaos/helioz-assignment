@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useCollection } from "../../hooks/useCollection";
 import { useFirestore } from "../../hooks/useFirestore";
-import { Box, Button, Flex, Heading, Text } from "@chakra-ui/react";
+import { Box, Button, Flex, Heading, Progress, Text } from "@chakra-ui/react";
 
 //components
 import AddClientModal from "./AddClientModal";
@@ -26,6 +26,8 @@ export default function Clients() {
     isLoading,
   } = collectionResult as {
     data: Client[] | undefined;
+    error: Error;
+    isLoading: boolean;
   };
 
   console.log(clients);
@@ -39,7 +41,12 @@ export default function Clients() {
       </Flex>
 
       <Box>
-        {!clients && <Text>No clients yet!</Text>}
+        {isLoading && <Progress isIndeterminate colorScheme="blackAlpha" />}
+        {error && (
+          <Text color="red">
+            There was an error getting clients. Please try again.
+          </Text>
+        )}
         {clients?.length === 0 && <Text>No clients yet!</Text>}
         {clients?.map((client) => (
           <Flex

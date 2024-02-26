@@ -16,6 +16,7 @@ import {
   Divider,
   Input,
   FormLabel,
+  Progress,
 } from "@chakra-ui/react";
 
 //components
@@ -43,6 +44,8 @@ export default function Contracts() {
     isLoading,
   } = collectionResult as {
     data: Contract[] | undefined;
+    isLoading: boolean;
+    error: Error;
   };
 
   const toggleSortDirection = () => {
@@ -117,7 +120,8 @@ export default function Contracts() {
       </Flex>
 
       <Box>
-        {!contracts && <Text>No contracts yet!</Text>}
+        {isLoading && <Progress isIndeterminate colorScheme="blackAlpha" />}
+        {error && <Text>There was an error getting data.</Text>}
         {contracts?.length === 0 && <Text>No contracts yet!</Text>}
         {filteredContracts?.length === 0 && searchQuery && (
           <Text>No contracts found matching "{searchQuery}".</Text>

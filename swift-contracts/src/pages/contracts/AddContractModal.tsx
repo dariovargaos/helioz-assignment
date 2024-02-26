@@ -2,8 +2,8 @@ import { useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import Select from "react-select";
 import { useFirestore } from "../../hooks/useFirestore";
-import { useCollection } from "../../hooks/useCollection";
 import { timestamp } from "../../firebase/config";
+import { useCollection } from "../../hooks/useCollection";
 import {
   Button,
   Flex,
@@ -28,8 +28,8 @@ import {
 
 interface Client {
   id: string;
-  clientFirstName: string;
-  clientLastName: string;
+  firstName: string;
+  lastName: string;
 }
 
 interface SelectOption {
@@ -47,7 +47,7 @@ interface ContractFormData {
   selectedClients: [{ value: string; label: string }] | null;
   contractDate: string;
   contractDurationNumber: number;
-  contractDurationInUnit: { value: string; label: string } | null; // Assuming this matches the structure of options in your Select component
+  contractDurationInUnit: { value: string; label: string } | null;
   contractDetails: string;
 }
 
@@ -56,6 +56,7 @@ export default function AddContractModal({
   setIsOpenModal,
 }: ContractModalProps) {
   const [selectOptions, setSelectOptions] = useState<SelectOption[]>([]);
+  const [isPending, setIsPending] = useState<boolean>(false);
   const { addDocument } = useFirestore("contracts");
   const { data: clients } = useCollection("clients") as {
     data: Client[] | undefined;
@@ -69,7 +70,7 @@ export default function AddContractModal({
       const options = clients.map((client) => {
         return {
           value: client.id,
-          label: `${client.clientFirstName} ${client.clientLastName}`,
+          label: `${client.firstName} ${client.lastName}`,
         };
       });
       setSelectOptions(options);
@@ -95,6 +96,8 @@ export default function AddContractModal({
   } = useForm<ContractFormData>();
 
   const onSubmit = async (data: ContractFormData) => {
+    setIsPending(true);
+
     if (!data.selectedClients) {
       console.log("No clients seleceted.");
       return;
@@ -105,7 +108,7 @@ export default function AddContractModal({
         (client) => client.id === selectedClient.value
       );
       return {
-        name: `${client?.clientFirstName} ${client?.clientLastName}`,
+        name: `${client?.firstName} ${client?.lastName}`,
         id: selectedClient.value,
       };
     });
@@ -125,6 +128,7 @@ export default function AddContractModal({
       setValue("contractDurationInUnit", null);
       setValue("selectedClients", null);
       closeModal();
+      setIsPending(false);
       toast({
         title: "Contract added.",
         description: "Successfully added contract.",
@@ -135,6 +139,7 @@ export default function AddContractModal({
       });
     } catch (error) {
       console.error("Error adding contract:", error);
+      setIsPending(false);
       toast({
         title: "Error adding contract.",
         description: `There was an error, ${error}`,
@@ -152,7 +157,7 @@ export default function AddContractModal({
         <ModalCloseButton />
         <ModalBody>
           <form onSubmit={handleSubmit(onSubmit)}>
-            <FormControl>
+            <FormControl mb={2}>
               <FormLabel>Contract name</FormLabel>
               <Input
                 {...register("contractName", {
@@ -167,7 +172,7 @@ export default function AddContractModal({
                 <Text color="red">{errors.contractName.message}</Text>
               )}
             </FormControl>
-            <FormControl>
+            <FormControl mb={2}>
               <FormLabel>Select clients</FormLabel>
               <Controller
                 name="selectedClients"
@@ -181,7 +186,7 @@ export default function AddContractModal({
                 <Text color="red">{errors.selectedClients.message}</Text>
               )}
             </FormControl>
-            <FormControl>
+            <FormControl mb={2}>
               <FormLabel>Contract start date</FormLabel>
               <Controller
                 render={({ field }) => (
@@ -200,7 +205,7 @@ export default function AddContractModal({
 
             <FormLabel>Contract duration</FormLabel>
             <Flex gap={2}>
-              <FormControl>
+              <FormControl mb={2}>
                 <Controller
                   name="contractDurationNumber"
                   control={control}
@@ -243,7 +248,7 @@ export default function AddContractModal({
               </FormControl>
             </Flex>
 
-            <FormControl>
+            <FormControl mb={2}>
               <FormLabel>Contract details</FormLabel>
               <Textarea
                 {...register("contractDetails", {
@@ -258,9 +263,13 @@ export default function AddContractModal({
                 <Text color="red">{errors.contractDetails.message}</Text>
               )}
             </FormControl>
-            <Button type="submit" colorScheme="blackAlpha">
-              Submit
-            </Button>
+            {!isPending ? (
+              <Button type="submit" colorScheme="blackAlpha">
+                Submit
+              </Button>
+            ) : (
+              <Button isLoading colorScheme="blackAlpha"></Button>
+            )}
           </form>
         </ModalBody>
       </ModalContent>

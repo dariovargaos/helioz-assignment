@@ -6,6 +6,7 @@ import {
   Divider,
   Flex,
   Heading,
+  Progress,
   Text,
   useToast,
 } from "@chakra-ui/react";
@@ -13,7 +14,7 @@ import { ArrowBackIcon } from "@chakra-ui/icons";
 
 export default function ContractSummary() {
   const { id } = useParams();
-  const { data: contract } = useDocument("contracts", id);
+  const { data: contract, error, isLoading } = useDocument("contracts", id);
   const { deleteDocument } = useFirestore("contracts");
   const navigate = useNavigate();
   const toast = useToast();
@@ -46,6 +47,13 @@ export default function ContractSummary() {
             Delete contract
           </Button>
         </Flex>
+
+        {isLoading && <Progress isIndeterminate colorScheme="blackAlpha" />}
+        {error && (
+          <Text color="red">
+            There was an error getting contract information. Please try again.
+          </Text>
+        )}
 
         <Heading size="lg">Contract information</Heading>
 

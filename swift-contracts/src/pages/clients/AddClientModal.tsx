@@ -54,10 +54,16 @@ export default function AddClientModal({
     setIsPending(true);
 
     const client = {
-      firstName: data.clientFirstName,
-      lastName: data.clientLastName,
+      firstName:
+        data.clientFirstName.charAt(0).toUpperCase() +
+        data.clientFirstName.slice(1).toLowerCase(),
+      lastName:
+        data.clientLastName.charAt(0).toUpperCase() +
+        data.clientLastName.slice(1).toLowerCase(),
       idNumber: data.clientIdNumber,
-      address: data.clientAddress,
+      address:
+        data.clientAddress.charAt(0).toUpperCase() +
+        data.clientAddress.slice(1).toLowerCase(),
       email: data.clientEmail,
       contactNumber: data.clientContactNumber,
     };
