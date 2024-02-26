@@ -23,10 +23,18 @@ export default function Navbar() {
         {user ? (
           <Flex align="center" gap={3}>
             <Text>Hello, {user.displayName}</Text>
-            <Link as={RouterNavLink} to="/contracts">
+            <Link
+              as={RouterNavLink}
+              to="/contracts"
+              _activeLink={{ fontWeight: "bold", textDecoration: "underline" }}
+            >
               Contracts
             </Link>
-            <Link as={RouterNavLink} to="/clients">
+            <Link
+              as={RouterNavLink}
+              to="/clients"
+              _activeLink={{ fontWeight: "bold", textDecoration: "underline" }}
+            >
               Clients
             </Link>
             {!isPending ? (

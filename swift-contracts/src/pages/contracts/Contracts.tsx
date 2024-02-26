@@ -117,6 +117,7 @@ export default function Contracts() {
       </Flex>
 
       <Box>
+        {!contracts && <Text>No contracts yet!</Text>}
         {contracts?.length === 0 && <Text>No contracts yet!</Text>}
         {filteredContracts?.length === 0 && searchQuery && (
           <Text>No contracts found matching "{searchQuery}".</Text>

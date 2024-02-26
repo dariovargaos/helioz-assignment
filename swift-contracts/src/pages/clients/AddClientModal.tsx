@@ -57,7 +57,7 @@ export default function AddClientModal({
       firstName: data.clientFirstName,
       lastName: data.clientLastName,
       idNumber: data.clientIdNumber,
-      adrees: data.clientAddress,
+      address: data.clientAddress,
       email: data.clientEmail,
       contactNumber: data.clientContactNumber,
     };
@@ -96,7 +96,7 @@ export default function AddClientModal({
         <ModalCloseButton />
         <ModalBody>
           <form onSubmit={handleSubmit(onSubmit)}>
-            <FormControl>
+            <FormControl mb={2}>
               <FormLabel>First Name</FormLabel>
               <Input
                 {...register("clientFirstName", {
@@ -108,7 +108,7 @@ export default function AddClientModal({
                 <Text color="red">{errors.clientFirstName.message}</Text>
               )}
             </FormControl>
-            <FormControl>
+            <FormControl mb={2}>
               <FormLabel>Last Name</FormLabel>
               <Input
                 {...register("clientLastName", {
@@ -120,7 +120,7 @@ export default function AddClientModal({
                 <Text color="red">{errors.clientLastName.message}</Text>
               )}
             </FormControl>
-            <FormControl>
+            <FormControl mb={2}>
               <FormLabel>ID Number</FormLabel>
               <Input
                 {...register("clientIdNumber", {
@@ -141,7 +141,7 @@ export default function AddClientModal({
               )}
             </FormControl>
 
-            <FormControl>
+            <FormControl mb={2}>
               <FormLabel>Address</FormLabel>
               <Input
                 {...register("clientAddress", {
@@ -153,7 +153,7 @@ export default function AddClientModal({
                 <Text color="red">{errors.clientAddress.message}</Text>
               )}
             </FormControl>
-            <FormControl>
+            <FormControl mb={2}>
               <FormLabel>Email</FormLabel>
               <Input
                 {...register("clientEmail", {
@@ -169,7 +169,7 @@ export default function AddClientModal({
                 <Text color="red">{errors.clientEmail.message}</Text>
               )}
             </FormControl>
-            <FormControl>
+            <FormControl mb={2}>
               <FormLabel>Contact number</FormLabel>
               <Input
                 {...register("clientContactNumber", {

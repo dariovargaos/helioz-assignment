@@ -3,6 +3,7 @@ import {
   UseMutationResult,
   useQueryClient,
 } from "@tanstack/react-query";
+import { useAuthContext } from "./useAuthContext";
 import { db, timestamp } from "../firebase/config";
 import {
   collection,
@@ -29,6 +30,7 @@ interface DeleteDocumentParams {
 export const useFirestore = (collectionName: string) => {
   const toast = useToast();
   const queryClient = useQueryClient();
+  const { user } = useAuthContext();
 
   //collection ref
   const collectionRef: CollectionReference<DocumentData> = collection(
@@ -47,6 +49,7 @@ export const useFirestore = (collectionName: string) => {
       const addedDocumentRef = await addDoc(collectionRef, {
         ...doc,
         createdAt: createdAt,
+        uid: user?.uid,
       });
       return addedDocumentRef;
     },

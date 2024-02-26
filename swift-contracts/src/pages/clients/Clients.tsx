@@ -8,12 +8,12 @@ import AddClientModal from "./AddClientModal";
 
 interface Client {
   id: string;
-  clientFirstName: string;
-  clientLastName: string;
-  clientIdNumber: string;
-  clientAddress: string;
-  clientEmail: string;
-  clientContactNumber: string;
+  firstName: string;
+  lastName: string;
+  idNumber: string;
+  address: string;
+  email: string;
+  contactNumber: string;
 }
 
 export default function Clients() {
@@ -39,6 +39,7 @@ export default function Clients() {
       </Flex>
 
       <Box>
+        {!clients && <Text>No clients yet!</Text>}
         {clients?.length === 0 && <Text>No clients yet!</Text>}
         {clients?.map((client) => (
           <Flex
@@ -51,19 +52,24 @@ export default function Clients() {
             justify="space-between"
           >
             <Heading size="md">
-              {client.clientFirstName} {client.clientLastName}
+              {client.firstName.charAt(0).toUpperCase() +
+                client.firstName.slice(1)}{" "}
+              {client.lastName.charAt(0).toUpperCase() +
+                client.lastName.slice(1)}
             </Heading>
-            <Text color="gray.500">ID: {client.clientIdNumber}</Text>
-            <Box w="20%" wordBreak="break-word">
-              <Text color="gray.500">Address: {client.clientAddress}</Text>
-            </Box>
-            <Box w="20%" wordBreak="break-word">
-              <Text color="gray.500">Email: {client.clientEmail}</Text>
-            </Box>
+            <Text color="gray.500">ID: {client.idNumber}</Text>
             <Box w="20%" wordBreak="break-word">
               <Text color="gray.500">
-                Contact: {client.clientContactNumber}
+                Address:{" "}
+                {client.address.charAt(0).toUpperCase() +
+                  client.address.slice(1)}
               </Text>
+            </Box>
+            <Box w="20%" wordBreak="break-word">
+              <Text color="gray.500">Email: {client.email}</Text>
+            </Box>
+            <Box w="20%" wordBreak="break-word">
+              <Text color="gray.500">Contact: {client.contactNumber}</Text>
             </Box>
 
             <Button onClick={() => deleteDocument(client.id)} colorScheme="red">
