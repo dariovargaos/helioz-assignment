@@ -16,6 +16,7 @@ import Contracts from "./pages/contracts/Contracts";
 import ContractSummary from "./pages/contracts/ContractSummary";
 import Clients from "./pages/clients/Clients";
 import Home from "./pages/home/Home";
+import ResetPassword from "./components/ResetPassword";
 
 function App() {
   const { user, authIsReady } = useAuthContext();
@@ -31,6 +32,10 @@ function App() {
           <Route
             path="/login"
             element={!user ? <Login /> : <Navigate to="/contracts" />}
+          />
+          <Route
+            path="/resetpassword"
+            element={!user ? <ResetPassword /> : <Navigate to="/contracts" />}
           />
         </Route>
 

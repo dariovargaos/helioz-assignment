@@ -104,9 +104,14 @@ export default function Login() {
             <Button isLoading></Button>
           )}
         </form>
-        <Link as={RouterLink} to="/signup" color="black">
-          Not signed up yet? <b>Signup here.</b>
-        </Link>
+        <Flex flexDir="column" gap={3}>
+          <Link as={RouterLink} to="/resetpassword">
+            Forgot password?
+          </Link>
+          <Link as={RouterLink} to="/signup" color="black">
+            Not signed up yet? <b>Signup here.</b>
+          </Link>
+        </Flex>
       </Box>
     </Flex>
   );

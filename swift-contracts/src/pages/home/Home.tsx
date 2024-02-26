@@ -1,3 +1,5 @@
+import { useNavigate } from "react-router-dom";
+import { useAuthContext } from "../../hooks/useAuthContext";
 import {
   Box,
   Button,
@@ -12,6 +14,8 @@ import {
 import Navbar from "../../components/Navbar";
 
 export default function Home() {
+  const { user } = useAuthContext();
+  const navigate = useNavigate();
   return (
     <Box>
       <Navbar />
@@ -75,7 +79,12 @@ export default function Home() {
             Contract can transform your business operations today.
           </Text>
 
-          <Button colorScheme="blackAlpha">
+          <Button
+            onClick={
+              !user ? () => navigate("/login") : () => navigate("/contracts")
+            }
+            colorScheme="blackAlpha"
+          >
             Start Managing Your Contracts
           </Button>
         </Flex>
