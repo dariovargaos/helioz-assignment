@@ -32,6 +32,11 @@ interface Client {
   lastName: string;
 }
 
+interface AssignedClients {
+  id: string;
+  name: string;
+}
+
 interface SelectOption {
   value: string;
   label: string;
@@ -99,10 +104,12 @@ export default function EditContractModal({
   //setting contract data from firestore as default values in edit form
   useEffect(() => {
     if (isOpenModal) {
-      const formattedClients = contract?.assignedClientsList.map((client) => ({
-        value: client.id,
-        label: client.name,
-      }));
+      const formattedClients = contract?.assignedClientsList.map(
+        (client: AssignedClients) => ({
+          value: client.id,
+          label: client.name,
+        })
+      );
 
       const formatStartDate = contract?.startDate
         .toDate()

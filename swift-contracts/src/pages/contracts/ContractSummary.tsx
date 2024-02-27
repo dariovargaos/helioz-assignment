@@ -11,30 +11,52 @@ import {
   Text,
   useToast,
 } from "@chakra-ui/react";
+
+//icons
 import { ArrowBackIcon } from "@chakra-ui/icons";
 
 //components
 import EditContractModal from "./EditContractModal";
 
+interface Contract {
+  assignedClientsList: Array<{ id: string; name: string }>;
+  createdAt: {
+    toDate: () => Date;
+  };
+  details: string;
+  duration: string;
+  id: string;
+  name: string;
+  startDate: {
+    toDate: () => Date;
+  };
+}
+
 export default function ContractSummary() {
   const [isOpenModal, setIsOpenModal] = useState<boolean>(false);
-  const { id } = useParams();
-  const { data: contract, error, isLoading } = useDocument("contracts", id);
+  const { id } = useParams<{ id: string }>();
+  const {
+    data: contract,
+    error,
+    isLoading,
+  } = useDocument<Contract>("contracts", id!);
   const { deleteDocument } = useFirestore("contracts");
   const navigate = useNavigate();
   const toast = useToast();
 
   const handleDelete = () => {
-    deleteDocument(contract?.id);
-    navigate("/contracts");
-    toast({
-      title: "Contract deleted.",
-      description: "Successfully deleted contract.",
-      status: "success",
-      variant: "customSuccess",
-      duration: 5000,
-      isClosable: true,
-    });
+    if (contract?.id) {
+      deleteDocument(contract?.id);
+      navigate("/contracts");
+      toast({
+        title: "Contract deleted.",
+        description: "Successfully deleted contract.",
+        status: "success",
+        variant: "customSuccess",
+        duration: 5000,
+        isClosable: true,
+      });
+    }
   };
   return (
     <Flex w="100%" justify="center" p={3}>

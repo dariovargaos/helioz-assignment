@@ -28,7 +28,7 @@ interface Client {
 
 export default function Clients() {
   const [isOpenModal, setIsOpenModal] = useState<boolean>(false);
-  const [selectedClient, setSelectedClient] = useState(null);
+  const [selectedClient, setSelectedClient] = useState<Client | null>(null);
   const { deleteDocument } = useFirestore("clients");
   const collectionResult = useCollection("clients");
   const {
@@ -43,7 +43,7 @@ export default function Clients() {
 
   console.log(clients);
 
-  const handleEdit = (client) => {
+  const handleEdit = (client: Client) => {
     setIsOpenModal(true);
     setSelectedClient(client);
   };

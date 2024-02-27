@@ -23,8 +23,10 @@ import {
 import AddContractModal from "./AddContractModal";
 
 interface Contract {
-  assignedClientList: [];
-  createdAt: string;
+  assignedClientList: Array<{ id: string; name: string }>;
+  createdAt: {
+    toDate: () => Date;
+  };
   details: string;
   duration: string;
   id: string;
@@ -67,7 +69,8 @@ export default function Contracts() {
 
       let searchByCreatedAt = true;
       if (selectedDate) {
-        const contractCreatedAt = new Date(contract.createdAt.seconds * 1000)
+        const contractCreatedAt = contract.createdAt
+          .toDate()
           .toISOString()
           .split("T")[0];
         searchByCreatedAt = contractCreatedAt === selectedDate;

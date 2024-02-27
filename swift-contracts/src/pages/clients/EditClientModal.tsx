@@ -66,7 +66,7 @@ export default function EditClientModal({
 
   //setting client data from firestore as default values in edit form
   useEffect(() => {
-    if (isOpenModal) {
+    if (isOpenModal && client) {
       setValue("clientFirstName", client?.firstName);
       setValue("clientLastName", client?.lastName);
       setValue("clientIdNumber", client?.idNumber);
@@ -80,24 +80,26 @@ export default function EditClientModal({
     setIsPending(true);
 
     try {
-      await updateDocument(client?.id, {
-        firstName: data.clientFirstName,
-        lastName: data.clientLastName,
-        idNumber: data.clientIdNumber,
-        address: data.clientAddress,
-        email: data.clientEmail,
-        contactNumber: data.clientContactNumber,
-      });
-      closeModal();
-      setIsPending(false);
-      toast({
-        title: "Client added.",
-        description: "Successfully added client.",
-        status: "success",
-        duration: 5000,
-        isClosable: true,
-      });
-      console.log("Client added successfully.");
+      if (client?.id) {
+        await updateDocument(client?.id, {
+          firstName: data.clientFirstName,
+          lastName: data.clientLastName,
+          idNumber: data.clientIdNumber,
+          address: data.clientAddress,
+          email: data.clientEmail,
+          contactNumber: data.clientContactNumber,
+        });
+        closeModal();
+        setIsPending(false);
+        toast({
+          title: "Client added.",
+          description: "Successfully added client.",
+          status: "success",
+          duration: 5000,
+          isClosable: true,
+        });
+        console.log("Client added successfully.");
+      }
     } catch (error) {
       console.error("Error adding client:", error);
       setIsPending(false);
