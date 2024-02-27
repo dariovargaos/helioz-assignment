@@ -1,7 +1,16 @@
 import { useState } from "react";
 import { useCollection } from "../../hooks/useCollection";
 import { useFirestore } from "../../hooks/useFirestore";
-import { Box, Button, Flex, Heading, Progress, Text } from "@chakra-ui/react";
+import {
+  Box,
+  Button,
+  Flex,
+  Grid,
+  GridItem,
+  Heading,
+  Progress,
+  Text,
+} from "@chakra-ui/react";
 
 //components
 import AddClientModal from "./AddClientModal";
@@ -56,50 +65,55 @@ export default function Clients() {
         )}
         {clients?.length === 0 && <Text>No clients yet!</Text>}
         {clients?.map((client) => (
-          <Flex
+          <Grid
             key={client.id}
+            templateColumns="repeat(1, 1fr) minmax(120px, auto) repeat(4, 1fr)"
+            gap={4}
             p={2}
             boxShadow="base"
             borderLeft="4px solid black"
             mb={3}
-            align="center"
-            justify="space-between"
+            alignItems="center"
           >
-            <Heading size="md">
-              {client.firstName} {client.lastName}
-            </Heading>
-            <Text color="gray.500">ID: {client.idNumber}</Text>
-            <Box w="20%" wordBreak="break-word">
-              <Text color="gray.500">
-                Address:{" "}
-                {client.address.charAt(0).toUpperCase() +
-                  client.address.slice(1)}
-              </Text>
-            </Box>
-            <Box w="20%" wordBreak="break-word">
+            <GridItem>
+              <Heading size="md">
+                {client.firstName} {client.lastName}
+              </Heading>
+            </GridItem>
+            <GridItem>
+              <Text color="gray.500">ID: {client.idNumber}</Text>
+            </GridItem>
+            <GridItem>
+              <Text color="gray.500">Address: {client.address}</Text>
+            </GridItem>
+            <GridItem>
               <Text color="gray.500">Email: {client.email}</Text>
-            </Box>
-            <Box w="20%" wordBreak="break-word">
+            </GridItem>
+            <GridItem>
               <Text color="gray.500">Contact: {client.contactNumber}</Text>
-            </Box>
+            </GridItem>
 
-            <Flex flexDir="column" gap={2}>
-              <Button
-                onClick={() => handleEdit(client)}
-                size="sm"
-                colorScheme="whatsapp"
-              >
-                Edit Client
-              </Button>
-              <Button
-                onClick={() => deleteDocument(client.id)}
-                size="sm"
-                colorScheme="red"
-              >
-                Delete Client
-              </Button>
-            </Flex>
-          </Flex>
+            <GridItem>
+              <Flex gap={2}>
+                <Button
+                  onClick={() => handleEdit(client)}
+                  size="sm"
+                  colorScheme="whatsapp"
+                  variant="ghost"
+                >
+                  Edit Client
+                </Button>
+                <Button
+                  onClick={() => deleteDocument(client.id)}
+                  size="sm"
+                  colorScheme="red"
+                  variant="ghost"
+                >
+                  Delete Client
+                </Button>
+              </Flex>
+            </GridItem>
+          </Grid>
         ))}
       </Box>
 

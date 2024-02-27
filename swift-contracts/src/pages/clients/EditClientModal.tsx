@@ -29,7 +29,7 @@ interface Client {
 interface ClientModalProps {
   isOpenModal: boolean;
   setIsOpenModal: () => void;
-  client: Client | undefined;
+  client: Client | undefined | null;
 }
 
 interface ClientFormData {
