@@ -12,6 +12,7 @@ import {
   deleteDoc,
   DocumentReference,
   CollectionReference,
+  updateDoc,
 } from "firebase/firestore";
 import { useToast } from "@chakra-ui/react";
 
@@ -25,6 +26,11 @@ interface AddDocumentParams {
 
 interface DeleteDocumentParams {
   id: string;
+}
+
+interface UpdateDocumentParams {
+  id: string;
+  updates: DocumentData;
 }
 
 export const useFirestore = (collectionName: string) => {
@@ -92,6 +98,43 @@ export const useFirestore = (collectionName: string) => {
     },
   });
 
+  //update document mutation
+  const updateDocumentMutation: UseMutationResult<
+    void,
+    Error,
+    UpdateDocumentParams
+  > = useMutation({
+    mutationFn: async ({ id, updates }): Promise<void> => {
+      const documentRef = doc(collectionRef, id);
+      await updateDoc(documentRef, updates);
+    },
+    onSuccess: (_, { id }) => {
+      console.log("Document updated successfully.");
+      toast({
+        title: "Contract updated successfully.",
+        status: "success",
+        variant: "customSuccess",
+        duration: 5000,
+        isClosable: true,
+      });
+      queryClient.invalidateQueries({
+        queryKey: [collectionName],
+      });
+      queryClient.invalidateQueries({
+        queryKey: ["document", collectionName, id],
+      });
+    },
+    onError: (error) => {
+      toast({
+        title: "Error",
+        description: `An error occurred: ${error.message}`,
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+      });
+    },
+  });
+
   //add document
   const addDocument = async (doc: DocumentData): Promise<void> => {
     await addDocumentMutation.mutateAsync({ doc });
@@ -102,5 +145,13 @@ export const useFirestore = (collectionName: string) => {
     await deleteDocumentMutation.mutateAsync({ id });
   };
 
-  return { addDocument, deleteDocument };
+  //update document
+  const updateDocument = async (
+    id: string,
+    updates: DocumentData
+  ): Promise<void> => {
+    await updateDocumentMutation.mutateAsync({ id, updates });
+  };
+
+  return { addDocument, deleteDocument, updateDocument };
 };

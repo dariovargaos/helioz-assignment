@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { useDocument } from "../../hooks/useDocument";
 import { useFirestore } from "../../hooks/useFirestore";
@@ -12,7 +13,11 @@ import {
 } from "@chakra-ui/react";
 import { ArrowBackIcon } from "@chakra-ui/icons";
 
+//components
+import EditContractModal from "./EditContractModal";
+
 export default function ContractSummary() {
+  const [isOpenModal, setIsOpenModal] = useState<boolean>(false);
   const { id } = useParams();
   const { data: contract, error, isLoading } = useDocument("contracts", id);
   const { deleteDocument } = useFirestore("contracts");
@@ -33,7 +38,14 @@ export default function ContractSummary() {
   };
   return (
     <Flex w="100%" justify="center" p={3}>
-      <Flex boxShadow="base" w="80%" p={2} flexDir="column" gap={5}>
+      <Flex
+        bg="gray.50"
+        boxShadow="base"
+        w="80%"
+        p={2}
+        flexDir="column"
+        gap={5}
+      >
         <Flex justify="space-between">
           <Button
             onClick={() => navigate("/contracts")}
@@ -43,9 +55,14 @@ export default function ContractSummary() {
             Back
           </Button>
 
-          <Button onClick={handleDelete} colorScheme="red">
-            Delete contract
-          </Button>
+          <Flex gap={3}>
+            <Button onClick={() => setIsOpenModal(true)} colorScheme="whatsapp">
+              Update contract
+            </Button>
+            <Button onClick={handleDelete} colorScheme="red">
+              Delete contract
+            </Button>
+          </Flex>
         </Flex>
 
         {isLoading && <Progress isIndeterminate colorScheme="blackAlpha" />}
@@ -102,6 +119,12 @@ export default function ContractSummary() {
           <Text color="gray.500">{contract?.details}</Text>
         </Flex>
       </Flex>
+
+      <EditContractModal
+        isOpenModal={isOpenModal}
+        setIsOpenModal={() => setIsOpenModal(false)}
+        contract={contract}
+      />
     </Flex>
   );
 }
