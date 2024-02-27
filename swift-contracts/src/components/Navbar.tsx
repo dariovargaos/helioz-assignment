@@ -1,7 +1,7 @@
 import { NavLink as RouterNavLink, useNavigate } from "react-router-dom";
 import { useAuthContext } from "../hooks/useAuthContext";
 import { useLogout } from "../hooks/useLogout";
-import { Button, Flex, Heading, Image, Link, Text } from "@chakra-ui/react";
+import { Button, Flex, Image, Link, Text, useToast } from "@chakra-ui/react";
 
 //images
 import Logo from "/favicon.png";
@@ -10,6 +10,8 @@ export default function Navbar() {
   const { user } = useAuthContext();
   const { logout, error, isPending } = useLogout();
   const navigate = useNavigate();
+
+  const toast = useToast();
   return (
     <Flex
       as="nav"
@@ -22,18 +24,21 @@ export default function Navbar() {
       top="0"
       zIndex={1}
     >
-      <Image
-        src={Logo}
-        alt="Swift Contracts Logo"
-        filter="invert(100%)"
-        boxSize="60px"
-        onClick={() => navigate("/")}
-        _hover={{ cursor: "pointer" }}
-      />
+      <Flex align="center" gap={5}>
+        <Image
+          src={Logo}
+          alt="Swift Contracts Logo"
+          filter="invert(100%)"
+          boxSize="60px"
+          onClick={() => navigate("/")}
+          _hover={{ cursor: "pointer" }}
+        />
+        {user && <Text>Hello, {user.displayName}</Text>}
+      </Flex>
+
       <Flex gap={5}>
         {user ? (
           <Flex align="center" gap={3}>
-            <Text>Hello, {user.displayName}</Text>
             <Link
               as={RouterNavLink}
               to="/"
@@ -79,6 +84,14 @@ export default function Navbar() {
           </>
         )}
       </Flex>
+      {error &&
+        toast({
+          title: "Logout failed",
+          description: "Something went wrong.",
+          status: "error",
+          duration: 5000,
+          isClosable: true,
+        })}
     </Flex>
   );
 }

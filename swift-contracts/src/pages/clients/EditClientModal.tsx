@@ -14,6 +14,7 @@ import {
   ModalCloseButton,
   Text,
   useToast,
+  useBreakpointValue,
 } from "@chakra-ui/react";
 
 interface Client {
@@ -57,6 +58,11 @@ export default function EditClientModal({
   } = useForm<ClientFormData>();
 
   const toast = useToast();
+
+  const isSmallScreen = useBreakpointValue({
+    base: true,
+    md: false,
+  });
 
   //close modal and reset fields
   const closeModal = () => {
@@ -115,7 +121,7 @@ export default function EditClientModal({
   return (
     <Modal isOpen={isOpenModal} onClose={closeModal} isCentered>
       <ModalOverlay />
-      <ModalContent>
+      <ModalContent w={isSmallScreen ? "90%" : ""}>
         <ModalHeader>Edit Client</ModalHeader>
         <ModalCloseButton />
         <ModalBody>

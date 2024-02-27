@@ -22,5 +22,7 @@ export const useCollection = (collectionName: string) => {
     queryKey: [collectionName, user?.uid],
     queryFn: fetchCollectionData,
     enabled: !!user?.uid,
+    refetchOnWindowFocus: false,
+    staleTime: 10000,
   });
 };

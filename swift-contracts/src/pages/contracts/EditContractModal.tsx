@@ -23,6 +23,8 @@ import {
   NumberDecrementStepper,
   Textarea,
   Text,
+  useBreakpointValue,
+  useToast,
 } from "@chakra-ui/react";
 import { DocumentData } from "firebase/firestore";
 
@@ -68,6 +70,13 @@ export default function EditContractModal({
   const { data: clients } = useCollection("clients") as {
     data: Client[] | undefined;
   };
+
+  const toast = useToast();
+
+  const isSmallScreen = useBreakpointValue({
+    base: true,
+    md: false,
+  });
 
   //get clients for select
   useEffect(() => {
@@ -163,15 +172,29 @@ export default function EditContractModal({
       });
       closeModal();
       setIsPending(false);
+      toast({
+        title: "Contract added.",
+        description: "Successfully added contract.",
+        status: "success",
+        duration: 5000,
+        isClosable: true,
+      });
     } catch (error) {
       console.error("Error adding contract:", error);
       setIsPending(false);
+      toast({
+        title: "Failed to add contract.",
+        description: "Something went wrong.",
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+      });
     }
   };
   return (
     <Modal isOpen={isOpenModal} onClose={closeModal} isCentered>
       <ModalOverlay />
-      <ModalContent>
+      <ModalContent w={isSmallScreen ? "90%" : ""}>
         <ModalHeader>Edit Contract</ModalHeader>
         <ModalCloseButton />
         <ModalBody>

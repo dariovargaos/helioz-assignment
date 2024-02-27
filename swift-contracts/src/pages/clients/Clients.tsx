@@ -10,6 +10,7 @@ import {
   Heading,
   Progress,
   Text,
+  useBreakpointValue,
 } from "@chakra-ui/react";
 
 //components
@@ -43,6 +44,11 @@ export default function Clients() {
 
   console.log(clients);
 
+  const isSmallScreen = useBreakpointValue({
+    base: true,
+    md: false,
+  });
+
   const handleEdit = (client: Client) => {
     setIsOpenModal(true);
     setSelectedClient(client);
@@ -67,7 +73,11 @@ export default function Clients() {
         {clients?.map((client) => (
           <Grid
             key={client.id}
-            templateColumns="repeat(1, 1fr) minmax(120px, auto) repeat(4, 1fr)"
+            templateColumns={
+              isSmallScreen
+                ? ""
+                : "repeat(1, 1fr) minmax(120px, auto) repeat(4, 1fr)"
+            }
             gap={4}
             p={2}
             boxShadow="base"
@@ -75,44 +85,79 @@ export default function Clients() {
             mb={3}
             alignItems="center"
           >
-            <GridItem>
-              <Heading size="md">
-                {client.firstName} {client.lastName}
-              </Heading>
-            </GridItem>
-            <GridItem>
-              <Text color="gray.500">ID: {client.idNumber}</Text>
-            </GridItem>
-            <GridItem>
-              <Text color="gray.500">Address: {client.address}</Text>
-            </GridItem>
-            <GridItem>
-              <Text color="gray.500">Email: {client.email}</Text>
-            </GridItem>
-            <GridItem>
-              <Text color="gray.500">Contact: {client.contactNumber}</Text>
-            </GridItem>
+            {isSmallScreen ? (
+              <Flex w="100%" justify="space-between">
+                <Flex flexDir="column">
+                  <Heading size="md">
+                    {client.firstName} {client.lastName}
+                  </Heading>
+                  <Text color="gray.500">ID: {client.idNumber}</Text>
+                  <Text color="gray.500">Address: {client.address}</Text>
+                  <Text color="gray.500">Email: {client.email}</Text>
+                  <Text color="gray.500">Contact: {client.contactNumber}</Text>
+                </Flex>
 
-            <GridItem>
-              <Flex gap={2}>
-                <Button
-                  onClick={() => handleEdit(client)}
-                  size="sm"
-                  colorScheme="whatsapp"
-                  variant="ghost"
-                >
-                  Edit Client
-                </Button>
-                <Button
-                  onClick={() => deleteDocument(client.id)}
-                  size="sm"
-                  colorScheme="red"
-                  variant="ghost"
-                >
-                  Delete Client
-                </Button>
+                <Flex flexDir="column">
+                  <Button
+                    onClick={() => handleEdit(client)}
+                    size="sm"
+                    colorScheme="whatsapp"
+                    variant="ghost"
+                  >
+                    Edit Client
+                  </Button>
+                  <Button
+                    onClick={() => deleteDocument(client.id)}
+                    size="sm"
+                    colorScheme="red"
+                    variant="ghost"
+                  >
+                    Delete Client
+                  </Button>
+                </Flex>
               </Flex>
-            </GridItem>
+            ) : (
+              <>
+                <GridItem>
+                  <Heading size="md">
+                    {client.firstName} {client.lastName}
+                  </Heading>
+                </GridItem>
+                <GridItem>
+                  <Text color="gray.500">ID: {client.idNumber}</Text>
+                </GridItem>
+                <GridItem>
+                  <Text color="gray.500">Address: {client.address}</Text>
+                </GridItem>
+                <GridItem>
+                  <Text color="gray.500">Email: {client.email}</Text>
+                </GridItem>
+                <GridItem>
+                  <Text color="gray.500">Contact: {client.contactNumber}</Text>
+                </GridItem>
+
+                <GridItem>
+                  <Flex gap={2}>
+                    <Button
+                      onClick={() => handleEdit(client)}
+                      size="sm"
+                      colorScheme="whatsapp"
+                      variant="ghost"
+                    >
+                      Edit Client
+                    </Button>
+                    <Button
+                      onClick={() => deleteDocument(client.id)}
+                      size="sm"
+                      colorScheme="red"
+                      variant="ghost"
+                    >
+                      Delete Client
+                    </Button>
+                  </Flex>
+                </GridItem>
+              </>
+            )}
           </Grid>
         ))}
       </Box>

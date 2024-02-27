@@ -17,10 +17,16 @@ import {
   Input,
   FormLabel,
   Progress,
+  useBreakpointValue,
+  InputGroup,
+  InputLeftElement,
 } from "@chakra-ui/react";
 
 //components
 import AddContractModal from "./AddContractModal";
+
+//icons
+import { SearchIcon, Search2Icon } from "@chakra-ui/icons";
 
 interface Contract {
   assignedClientList: Array<{ id: string; name: string }>;
@@ -49,6 +55,8 @@ export default function Contracts() {
     isLoading: boolean;
     error: Error;
   };
+
+  console.log(contracts);
 
   const toggleSortDirection = () => {
     setSortDirection((prevDirection) =>
@@ -86,36 +94,85 @@ export default function Contracts() {
       }
     });
 
+  const isSmallScreen = useBreakpointValue({
+    base: true,
+    md: false,
+  });
+
   return (
     <Box as="main" p={2}>
       <Flex w="100%" mb={3} justify="space-between">
-        <Flex w="100%" gap={5}>
-          <Flex w="50%" gap={2}>
-            <FormLabel>Date created:</FormLabel>
-            <Input
-              type="date"
-              onChange={(e) => setSelectedDate(e.target.value)}
-            />
+        {isSmallScreen ? (
+          <Flex w="100%" gap={5} flexDir="column">
+            <Flex w="80%" gap={2} flexDir="column">
+              <Flex>
+                <FormLabel>Date created:</FormLabel>
+                <Input
+                  type="date"
+                  onChange={(e) => setSelectedDate(e.target.value)}
+                />
+              </Flex>
 
-            <Input
-              placeholder="Search contracts by name"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-            />
+              <InputGroup>
+                <InputLeftElement>
+                  <Search2Icon />
+                </InputLeftElement>
+                <Input
+                  placeholder="Search contracts by name"
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                />
+              </InputGroup>
+            </Flex>
+
+            <Button
+              onClick={toggleSortDirection}
+              colorScheme="blackAlpha"
+              variant="ghost"
+              w="50%"
+            >
+              Sort {sortDirection === "asc" ? "Z-A" : "A-Z"}
+            </Button>
+
+            <Button onClick={resetFilters} colorScheme="blackAlpha" w="50%">
+              Reset filters
+            </Button>
           </Flex>
+        ) : (
+          <Flex w="100%" gap={5}>
+            <Flex w="50%" gap={2}>
+              <FormLabel>Date created:</FormLabel>
+              <Input
+                type="date"
+                onChange={(e) => setSelectedDate(e.target.value)}
+                focusBorderColor="black"
+              />
 
-          <Button
-            onClick={toggleSortDirection}
-            colorScheme="blackAlpha"
-            variant="ghost"
-          >
-            Sort {sortDirection === "asc" ? "Z-A" : "A-Z"}
-          </Button>
+              <InputGroup>
+                <InputLeftElement>
+                  <Search2Icon />
+                </InputLeftElement>
+                <Input
+                  placeholder="Search by name"
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                />
+              </InputGroup>
+            </Flex>
 
-          <Button onClick={resetFilters} colorScheme="blackAlpha">
-            Reset filters
-          </Button>
-        </Flex>
+            <Button
+              onClick={toggleSortDirection}
+              colorScheme="blackAlpha"
+              variant="ghost"
+            >
+              Sort {sortDirection === "asc" ? "Z-A" : "A-Z"}
+            </Button>
+
+            <Button onClick={resetFilters} colorScheme="blackAlpha">
+              Reset filters
+            </Button>
+          </Flex>
+        )}
 
         <Button onClick={() => setIsOpenModal(true)} colorScheme="blackAlpha">
           Add Contract +

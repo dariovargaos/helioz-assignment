@@ -24,6 +24,7 @@ import {
   Textarea,
   Text,
   useToast,
+  useBreakpointValue,
 } from "@chakra-ui/react";
 
 interface Client {
@@ -63,6 +64,11 @@ export default function AddContractModal({
   };
 
   const toast = useToast();
+
+  const isSmallScreen = useBreakpointValue({
+    base: true,
+    md: false,
+  });
 
   //get clients for select
   useEffect(() => {
@@ -133,7 +139,6 @@ export default function AddContractModal({
         title: "Contract added.",
         description: "Successfully added contract.",
         status: "success",
-        variant: "customSuccess",
         duration: 5000,
         isClosable: true,
       });
@@ -152,7 +157,7 @@ export default function AddContractModal({
   return (
     <Modal isOpen={isOpenModal} onClose={closeModal} isCentered>
       <ModalOverlay />
-      <ModalContent>
+      <ModalContent w={isSmallScreen ? "90%" : ""}>
         <ModalHeader>New Contract</ModalHeader>
         <ModalCloseButton />
         <ModalBody>

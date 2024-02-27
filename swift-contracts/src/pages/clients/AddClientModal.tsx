@@ -14,6 +14,7 @@ import {
   ModalCloseButton,
   Text,
   useToast,
+  useBreakpointValue,
 } from "@chakra-ui/react";
 
 interface ClientModalProps {
@@ -44,6 +45,11 @@ export default function AddClientModal({
   } = useForm<ClientFormFields>();
 
   const toast = useToast();
+
+  const isSmallScreen = useBreakpointValue({
+    base: true,
+    md: false,
+  });
 
   const closeModal = () => {
     reset();
@@ -77,7 +83,6 @@ export default function AddClientModal({
         title: "Client added.",
         description: "Successfully added client.",
         status: "success",
-        variant: "customSuccess",
         duration: 5000,
         isClosable: true,
       });
@@ -97,7 +102,7 @@ export default function AddClientModal({
   return (
     <Modal isOpen={isOpenModal} onClose={closeModal} isCentered>
       <ModalOverlay />
-      <ModalContent>
+      <ModalContent w={isSmallScreen ? "90%" : ""}>
         <ModalHeader>New Client</ModalHeader>
         <ModalCloseButton />
         <ModalBody>

@@ -8,6 +8,7 @@ import {
   ListItem,
   Text,
   UnorderedList,
+  useBreakpointValue,
 } from "@chakra-ui/react";
 
 //components
@@ -16,6 +17,8 @@ import Navbar from "../../components/Navbar";
 export default function Home() {
   const { user } = useAuthContext();
   const navigate = useNavigate();
+
+  const isSmallScreen = useBreakpointValue({ base: true, md: false });
   return (
     <Box>
       <Navbar />
@@ -31,6 +34,8 @@ export default function Home() {
           h="100vh"
           justify="space-evenly"
           align="center"
+          p={2}
+          gap={isSmallScreen ? 4 : 0}
         >
           <Heading as="h3" size="lg" textAlign="center">
             Streamline Your Business Contracts with Ease

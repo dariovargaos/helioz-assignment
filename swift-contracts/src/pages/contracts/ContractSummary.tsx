@@ -10,6 +10,7 @@ import {
   Progress,
   Text,
   useToast,
+  useBreakpointValue,
 } from "@chakra-ui/react";
 
 //icons
@@ -42,7 +43,13 @@ export default function ContractSummary() {
   } = useDocument<Contract>("contracts", id!);
   const { deleteDocument } = useFirestore("contracts");
   const navigate = useNavigate();
+
   const toast = useToast();
+
+  const isSmallScreen = useBreakpointValue({
+    base: true,
+    md: false,
+  });
 
   const handleDelete = () => {
     if (contract?.id) {
@@ -63,7 +70,7 @@ export default function ContractSummary() {
       <Flex
         bg="gray.50"
         boxShadow="base"
-        w="80%"
+        w={isSmallScreen ? "100%" : "80%"}
         p={2}
         flexDir="column"
         gap={5}
@@ -77,9 +84,9 @@ export default function ContractSummary() {
             Back
           </Button>
 
-          <Flex gap={3}>
+          <Flex gap={3} flexDir={isSmallScreen ? "column" : "row"}>
             <Button onClick={() => setIsOpenModal(true)} colorScheme="whatsapp">
-              Update contract
+              Edit contract
             </Button>
             <Button onClick={handleDelete} colorScheme="red">
               Delete contract

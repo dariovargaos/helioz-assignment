@@ -110,13 +110,6 @@ export const useFirestore = (collectionName: string) => {
     },
     onSuccess: (_, { id }) => {
       console.log("Document updated successfully.");
-      toast({
-        title: "Contract updated successfully.",
-        status: "success",
-        variant: "customSuccess",
-        duration: 5000,
-        isClosable: true,
-      });
       queryClient.invalidateQueries({
         queryKey: [collectionName],
       });
