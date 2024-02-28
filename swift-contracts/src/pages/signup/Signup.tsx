@@ -142,11 +142,7 @@ export default function Signup() {
               Signup
             </Button>
           ) : (
-            <Button
-              isLoading
-              loadingText="Signing up..."
-              colorScheme="blackAlpha"
-            ></Button>
+            <Button isLoading colorScheme="blackAlpha"></Button>
           )}
         </form>
         <Link as={RouterLink} to="/login" color="black">
