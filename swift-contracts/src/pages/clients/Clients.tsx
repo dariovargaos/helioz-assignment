@@ -11,6 +11,7 @@ import {
   Progress,
   Text,
   useBreakpointValue,
+  useToast,
 } from "@chakra-ui/react";
 
 //components
@@ -28,7 +29,8 @@ interface Client {
 }
 
 export default function Clients() {
-  const [isOpenModal, setIsOpenModal] = useState<boolean>(false);
+  const [isOpenAddModal, setIsOpenAddModal] = useState<boolean>(false);
+  const [isOpenEditModal, setIsOpenEditModal] = useState<boolean>(false);
   const [selectedClient, setSelectedClient] = useState<Client | null>(null);
   const { deleteDocument } = useFirestore("clients");
   const collectionResult = useCollection("clients");
@@ -44,20 +46,36 @@ export default function Clients() {
 
   console.log(clients);
 
+  const toast = useToast;
+
   const isSmallScreen = useBreakpointValue({
     base: true,
     md: false,
   });
 
   const handleEdit = (client: Client) => {
-    setIsOpenModal(true);
+    setIsOpenEditModal(true);
     setSelectedClient(client);
+  };
+
+  const handleDelete = (id: string) => {
+    deleteDocument(id);
+    toast({
+      title: "Client deleted.",
+      description: "Successfully deleted client.",
+      status: "success",
+      duration: 5000,
+      isClosable: true,
+    });
   };
 
   return (
     <Box as="main" p={2}>
       <Flex justify="flex-end" mb={3}>
-        <Button onClick={() => setIsOpenModal(true)} colorScheme="blackAlpha">
+        <Button
+          onClick={() => setIsOpenAddModal(true)}
+          colorScheme="blackAlpha"
+        >
           Add Client +
         </Button>
       </Flex>
@@ -107,7 +125,7 @@ export default function Clients() {
                     Edit Client
                   </Button>
                   <Button
-                    onClick={() => deleteDocument(client.id)}
+                    onClick={() => handleDelete(client.id)}
                     size="sm"
                     colorScheme="red"
                     variant="ghost"
@@ -163,13 +181,13 @@ export default function Clients() {
       </Box>
 
       <AddClientModal
-        isOpenModal={isOpenModal}
-        setIsOpenModal={() => setIsOpenModal(false)}
+        isOpenAddModal={isOpenAddModal}
+        setIsOpenAddModal={() => setIsOpenAddModal(false)}
       />
 
       <EditClientModal
-        isOpenModal={isOpenModal}
-        setIsOpenModal={() => setIsOpenModal(false)}
+        isOpenEditModal={isOpenEditModal}
+        setIsOpenEditModal={() => setIsOpenEditModal(false)}
         client={selectedClient}
       />
     </Box>

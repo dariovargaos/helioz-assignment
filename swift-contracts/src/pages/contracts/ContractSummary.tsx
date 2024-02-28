@@ -59,7 +59,6 @@ export default function ContractSummary() {
         title: "Contract deleted.",
         description: "Successfully deleted contract.",
         status: "success",
-        variant: "customSuccess",
         duration: 5000,
         isClosable: true,
       });

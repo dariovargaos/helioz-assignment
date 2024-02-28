@@ -26,7 +26,7 @@ import {
 import AddContractModal from "./AddContractModal";
 
 //icons
-import { SearchIcon, Search2Icon } from "@chakra-ui/icons";
+import { Search2Icon } from "@chakra-ui/icons";
 
 interface Contract {
   assignedClientList: Array<{ id: string; name: string }>;

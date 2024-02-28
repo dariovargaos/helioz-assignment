@@ -20,6 +20,11 @@ import {
 //icons
 import { EmailIcon, LockIcon, ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
 
+interface LoginFormData {
+  email: string;
+  password: string;
+}
+
 export default function Login() {
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const {
@@ -27,10 +32,10 @@ export default function Login() {
     handleSubmit,
     reset,
     formState: { errors },
-  } = useForm();
+  } = useForm<LoginFormData>();
   const { login, error, isPending } = useLogin();
 
-  const onSubmit = (data) => {
+  const onSubmit = (data: LoginFormData) => {
     login(data.email, data.password);
 
     reset();

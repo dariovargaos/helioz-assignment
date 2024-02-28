@@ -173,8 +173,8 @@ export default function EditContractModal({
       closeModal();
       setIsPending(false);
       toast({
-        title: "Contract added.",
-        description: "Successfully added contract.",
+        title: "Contract updated.",
+        description: "Successfully updated contract.",
         status: "success",
         duration: 5000,
         isClosable: true,
@@ -183,7 +183,7 @@ export default function EditContractModal({
       console.error("Error adding contract:", error);
       setIsPending(false);
       toast({
-        title: "Failed to add contract.",
+        title: "Failed to update the contract.",
         description: "Something went wrong.",
         status: "error",
         duration: 5000,

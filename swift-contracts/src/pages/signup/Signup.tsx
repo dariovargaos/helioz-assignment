@@ -26,6 +26,12 @@ import {
   AtSignIcon,
 } from "@chakra-ui/icons";
 
+interface SignupFormData {
+  email: string;
+  password: string;
+  displayName: string;
+}
+
 export default function Signup() {
   const [showPassword, setShowPassword] = useState<boolean>(false);
 
@@ -36,9 +42,9 @@ export default function Signup() {
     handleSubmit,
     reset,
     formState: { errors },
-  } = useForm();
+  } = useForm<SignupFormData>();
 
-  const onSubmit = (data) => {
+  const onSubmit = (data: SignupFormData) => {
     signup(data.email, data.password, data.displayName);
 
     reset();

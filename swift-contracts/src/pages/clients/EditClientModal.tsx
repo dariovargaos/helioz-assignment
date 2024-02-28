@@ -28,8 +28,8 @@ interface Client {
 }
 
 interface ClientModalProps {
-  isOpenModal: boolean;
-  setIsOpenModal: () => void;
+  isOpenEditModal: boolean;
+  setIsOpenEditModal: () => void;
   client: Client | undefined | null;
 }
 
@@ -43,8 +43,8 @@ interface ClientFormData {
 }
 
 export default function EditClientModal({
-  isOpenModal,
-  setIsOpenModal,
+  isOpenEditModal,
+  setIsOpenEditModal,
   client,
 }: ClientModalProps) {
   const [isPending, setIsPending] = useState<boolean>(false);
@@ -67,12 +67,12 @@ export default function EditClientModal({
   //close modal and reset fields
   const closeModal = () => {
     reset();
-    setIsOpenModal();
+    setIsOpenEditModal();
   };
 
   //setting client data from firestore as default values in edit form
   useEffect(() => {
-    if (isOpenModal && client) {
+    if (isOpenEditModal && client) {
       setValue("clientFirstName", client?.firstName);
       setValue("clientLastName", client?.lastName);
       setValue("clientIdNumber", client?.idNumber);
@@ -80,7 +80,7 @@ export default function EditClientModal({
       setValue("clientEmail", client?.email);
       setValue("clientContactNumber", client?.contactNumber);
     }
-  }, [isOpenModal, setValue, client]);
+  }, [isOpenEditModal, setValue, client]);
 
   const onSubmit = async (data: ClientFormData) => {
     setIsPending(true);
@@ -98,8 +98,8 @@ export default function EditClientModal({
         closeModal();
         setIsPending(false);
         toast({
-          title: "Client added.",
-          description: "Successfully added client.",
+          title: "Client updated.",
+          description: "Successfully updated the client.",
           status: "success",
           duration: 5000,
           isClosable: true,
@@ -110,7 +110,7 @@ export default function EditClientModal({
       console.error("Error adding client:", error);
       setIsPending(false);
       toast({
-        title: "Error adding client.",
+        title: "Error updating the client.",
         description: `There was an error, ${error}`,
         status: "error",
         duration: 5000,
@@ -119,9 +119,9 @@ export default function EditClientModal({
     }
   };
   return (
-    <Modal isOpen={isOpenModal} onClose={closeModal} isCentered>
+    <Modal isOpen={isOpenEditModal} onClose={closeModal} isCentered>
       <ModalOverlay />
-      <ModalContent w={isSmallScreen ? "90%" : ""}>
+      <ModalContent w={isSmallScreen ? "90%" : "30%"}>
         <ModalHeader>Edit Client</ModalHeader>
         <ModalCloseButton />
         <ModalBody>

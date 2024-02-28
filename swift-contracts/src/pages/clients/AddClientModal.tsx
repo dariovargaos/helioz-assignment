@@ -18,8 +18,8 @@ import {
 } from "@chakra-ui/react";
 
 interface ClientModalProps {
-  isOpenModal: boolean;
-  setIsOpenModal: () => void;
+  isOpenAddModal: boolean;
+  setIsOpenAddModal: () => void;
 }
 
 interface ClientFormFields {
@@ -32,8 +32,8 @@ interface ClientFormFields {
 }
 
 export default function AddClientModal({
-  isOpenModal,
-  setIsOpenModal,
+  isOpenAddModal,
+  setIsOpenAddModal,
 }: ClientModalProps) {
   const [isPending, setIsPending] = useState<boolean>(false);
   const { addDocument } = useFirestore("clients");
@@ -53,7 +53,7 @@ export default function AddClientModal({
 
   const closeModal = () => {
     reset();
-    setIsOpenModal();
+    setIsOpenAddModal();
   };
 
   const onSubmit = async (data: ClientFormFields) => {
@@ -100,9 +100,9 @@ export default function AddClientModal({
     }
   };
   return (
-    <Modal isOpen={isOpenModal} onClose={closeModal} isCentered>
+    <Modal isOpen={isOpenAddModal} onClose={closeModal} isCentered>
       <ModalOverlay />
-      <ModalContent w={isSmallScreen ? "90%" : ""}>
+      <ModalContent w={isSmallScreen ? "90%" : "30%"}>
         <ModalHeader>New Client</ModalHeader>
         <ModalCloseButton />
         <ModalBody>
