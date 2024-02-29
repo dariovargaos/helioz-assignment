@@ -8,7 +8,7 @@ import {
 } from "firebase/auth";
 import { collection, doc, setDoc } from "firebase/firestore";
 import { useAuthContext } from "./useAuthContext";
-import { useToast } from "@chakra-ui/react";
+import { useCustomToast } from "./useCustomToast";
 
 interface SignupError {
   message: string;
@@ -25,7 +25,7 @@ export const useSignup = () => {
   const [isComponentMounted, setIsComponentMounted] = useState<boolean>(true);
 
   const navigate = useNavigate();
-  const toast = useToast();
+  const customToast = useCustomToast();
 
   const validateInput = (
     email: string,
@@ -95,13 +95,10 @@ export const useSignup = () => {
         setError(null);
         navigate("/contracts");
       }
-      toast({
+      customToast({
         title: "Welcome!",
         description: "We have created account for you.",
         status: "success",
-        variant: "customSuccess",
-        duration: 3000,
-        isClosable: true,
       });
     } catch (err) {
       if (!isComponentMounted) return;

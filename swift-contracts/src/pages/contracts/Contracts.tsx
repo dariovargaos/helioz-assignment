@@ -26,7 +26,12 @@ import {
 import AddContractModal from "./AddContractModal";
 
 //icons
-import { Search2Icon } from "@chakra-ui/icons";
+import {
+  AddIcon,
+  Search2Icon,
+  SmallAddIcon,
+  PlusSquareIcon,
+} from "@chakra-ui/icons";
 
 interface Contract {
   assignedClientList: Array<{ id: string; name: string }>;
@@ -109,6 +114,7 @@ export default function Contracts() {
                 <FormLabel>Date created:</FormLabel>
                 <Input
                   type="date"
+                  value={selectedDate}
                   onChange={(e) => setSelectedDate(e.target.value)}
                 />
               </Flex>
@@ -144,6 +150,7 @@ export default function Contracts() {
               <FormLabel>Date created:</FormLabel>
               <Input
                 type="date"
+                value={selectedDate}
                 onChange={(e) => setSelectedDate(e.target.value)}
                 focusBorderColor="black"
               />
@@ -174,8 +181,12 @@ export default function Contracts() {
           </Flex>
         )}
 
-        <Button onClick={() => setIsOpenModal(true)} colorScheme="blackAlpha">
-          Add Contract +
+        <Button
+          onClick={() => setIsOpenModal(true)}
+          colorScheme="blackAlpha"
+          rightIcon={<AddIcon />}
+        >
+          Add Contract
         </Button>
       </Flex>
 
@@ -198,15 +209,11 @@ export default function Contracts() {
               as={RouterLink}
               key={contract.id}
               to={`/contracts/${contract.id}`}
-              boxShadow="base"
               _hover={{ textDecoration: "none" }}
             >
               <Card wordBreak="break-word">
                 <CardHeader>
-                  <Heading size="md">
-                    {contract.name.charAt(0).toUpperCase() +
-                      contract.name.slice(1)}
-                  </Heading>
+                  <Heading size="md">{contract.name}</Heading>
                 </CardHeader>
                 <CardBody>
                   <Text>

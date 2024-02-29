@@ -40,10 +40,6 @@ export default function Login() {
 
     reset();
   };
-
-  const handleClick = () => {
-    setShowPassword(!showPassword);
-  };
   return (
     <Flex justify="center" align="center" h="80vh">
       <Box boxShadow="lg" p="20px">
@@ -90,7 +86,7 @@ export default function Login() {
                 <Button
                   colorScheme="blackAlpha"
                   variant="ghost"
-                  onClick={handleClick}
+                  onClick={() => setShowPassword(!showPassword)}
                 >
                   {showPassword ? <ViewIcon /> : <ViewOffIcon />}
                 </Button>
@@ -106,7 +102,7 @@ export default function Login() {
               Login
             </Button>
           ) : (
-            <Button isLoading></Button>
+            <Button isLoading />
           )}
         </form>
         <Flex flexDir="column" gap={3}>

@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { auth } from "../firebase/config";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { useAuthContext } from "./useAuthContext";
-import { useToast } from "@chakra-ui/react";
+import { useCustomToast } from "./useCustomToast";
 
 interface LoginError {
   message: string;
@@ -17,8 +17,7 @@ export const useLogin = () => {
   const [isPending, setIsPending] = useState<boolean>(false);
   const { dispatch } = useAuthContext();
   const [isComponentMounted, setIsComponentMounted] = useState<boolean>(true);
-
-  const toast = useToast();
+  const customToast = useCustomToast();
 
   //check whether the user is correctly entered login details
   const validateInput = (email: string, password: string): boolean => {
@@ -55,13 +54,10 @@ export const useLogin = () => {
         setError(null);
       }
 
-      toast({
+      customToast({
         title: "Welcome back.",
         description: "Logged in.",
         status: "success",
-        variant: "customSuccess",
-        duration: 3000,
-        isClosable: true,
       });
     } catch (err) {
       if (!isComponentMounted) return;

@@ -4,6 +4,7 @@ import Select from "react-select";
 import { useFirestore } from "../../hooks/useFirestore";
 import { timestamp } from "../../firebase/config";
 import { useCollection } from "../../hooks/useCollection";
+import { useCustomToast } from "../../hooks/useCustomToast";
 import {
   Button,
   Flex,
@@ -23,7 +24,6 @@ import {
   NumberDecrementStepper,
   Textarea,
   Text,
-  useToast,
   useBreakpointValue,
 } from "@chakra-ui/react";
 
@@ -63,7 +63,7 @@ export default function AddContractModal({
     data: Client[] | undefined;
   };
 
-  const toast = useToast();
+  const customToast = useCustomToast();
 
   const isSmallScreen = useBreakpointValue({
     base: true,
@@ -120,7 +120,8 @@ export default function AddContractModal({
     });
 
     const contract = {
-      name: data.contractName,
+      name:
+        data.contractName.charAt(0).toUpperCase() + data.contractName.slice(1),
       assignedClientsList,
       startDate: timestamp.fromDate(new Date(data.contractDate)),
       duration: `${data.contractDurationNumber} ${data.contractDurationInUnit?.value}`,
@@ -135,22 +136,18 @@ export default function AddContractModal({
       setValue("selectedClients", null);
       closeModal();
       setIsPending(false);
-      toast({
+      customToast({
         title: "Contract added.",
         description: "Successfully added contract.",
         status: "success",
-        duration: 5000,
-        isClosable: true,
       });
     } catch (error) {
       console.error("Error adding contract:", error);
       setIsPending(false);
-      toast({
+      customToast({
         title: "Error adding contract.",
         description: `There was an error, ${error}`,
         status: "error",
-        duration: 5000,
-        isClosable: true,
       });
     }
   };

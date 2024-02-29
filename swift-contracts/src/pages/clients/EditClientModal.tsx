@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { useFirestore } from "../../hooks/useFirestore";
+import { useCustomToast } from "../../hooks/useCustomToast";
 import {
   Button,
   FormControl,
@@ -13,7 +14,6 @@ import {
   ModalBody,
   ModalCloseButton,
   Text,
-  useToast,
   useBreakpointValue,
 } from "@chakra-ui/react";
 
@@ -57,7 +57,7 @@ export default function EditClientModal({
     setValue,
   } = useForm<ClientFormData>();
 
-  const toast = useToast();
+  const customToast = useCustomToast();
 
   const isSmallScreen = useBreakpointValue({
     base: true,
@@ -97,24 +97,20 @@ export default function EditClientModal({
         });
         closeModal();
         setIsPending(false);
-        toast({
+        customToast({
           title: "Client updated.",
           description: "Successfully updated the client.",
           status: "success",
-          duration: 5000,
-          isClosable: true,
         });
         console.log("Client added successfully.");
       }
     } catch (error) {
       console.error("Error adding client:", error);
       setIsPending(false);
-      toast({
+      customToast({
         title: "Error updating the client.",
         description: `There was an error, ${error}`,
         status: "error",
-        duration: 5000,
-        isClosable: true,
       });
     }
   };

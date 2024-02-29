@@ -49,10 +49,6 @@ export default function Signup() {
 
     reset();
   };
-
-  const handleClick = () => {
-    setShowPassword(!showPassword);
-  };
   return (
     <Flex justify="center" align="center" h="80vh">
       <Box boxShadow="lg" p="20px">
@@ -103,7 +99,7 @@ export default function Signup() {
                 <Button
                   colorScheme="blackAlpha"
                   variant="ghost"
-                  onClick={handleClick}
+                  onClick={() => setShowPassword(!showPassword)}
                 >
                   {showPassword ? <ViewOffIcon /> : <ViewIcon />}
                 </Button>
@@ -142,7 +138,7 @@ export default function Signup() {
               Signup
             </Button>
           ) : (
-            <Button isLoading colorScheme="blackAlpha"></Button>
+            <Button isLoading />
           )}
         </form>
         <Link as={RouterLink} to="/login" color="black">

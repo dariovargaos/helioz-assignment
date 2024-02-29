@@ -4,6 +4,7 @@ import Select from "react-select";
 import { useFirestore } from "../../hooks/useFirestore";
 import { timestamp } from "../../firebase/config";
 import { useCollection } from "../../hooks/useCollection";
+import { useCustomToast } from "../../hooks/useCustomToast";
 import {
   Button,
   Flex,
@@ -71,7 +72,7 @@ export default function EditContractModal({
     data: Client[] | undefined;
   };
 
-  const toast = useToast();
+  const customToast = useCustomToast();
 
   const isSmallScreen = useBreakpointValue({
     base: true,
@@ -172,22 +173,18 @@ export default function EditContractModal({
       });
       closeModal();
       setIsPending(false);
-      toast({
+      customToast({
         title: "Contract updated.",
         description: "Successfully updated contract.",
         status: "success",
-        duration: 5000,
-        isClosable: true,
       });
     } catch (error) {
       console.error("Error adding contract:", error);
       setIsPending(false);
-      toast({
+      customToast({
         title: "Failed to update the contract.",
         description: "Something went wrong.",
         status: "error",
-        duration: 5000,
-        isClosable: true,
       });
     }
   };
