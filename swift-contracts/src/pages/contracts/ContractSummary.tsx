@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { useDocument } from "../../hooks/useDocument";
-import { useFirestore } from "../../hooks/useFirestore";
 import {
   Button,
   Divider,
@@ -9,7 +8,6 @@ import {
   Heading,
   Progress,
   Text,
-  useToast,
   useBreakpointValue,
 } from "@chakra-ui/react";
 
@@ -18,6 +16,7 @@ import { ArrowBackIcon } from "@chakra-ui/icons";
 
 //components
 import EditContractModal from "./EditContractModal";
+import DeleteContractModal from "./DeleteContractModal";
 
 interface Contract {
   assignedClientsList: Array<{ id: string; name: string }>;
@@ -34,36 +33,22 @@ interface Contract {
 }
 
 export default function ContractSummary() {
-  const [isOpenModal, setIsOpenModal] = useState<boolean>(false);
+  const [isOpenEditModal, setIsOpenEditModal] = useState<boolean>(false);
+  const [isOpenDeleteModal, setIsOpenDeleteModal] = useState<boolean>(false);
   const { id } = useParams<{ id: string }>();
   const {
     data: contract,
     error,
     isLoading,
   } = useDocument<Contract>("contracts", id!);
-  const { deleteDocument } = useFirestore("contracts");
-  const navigate = useNavigate();
 
-  const toast = useToast();
+  const navigate = useNavigate();
 
   const isSmallScreen = useBreakpointValue({
     base: true,
     md: false,
   });
 
-  const handleDelete = () => {
-    if (contract?.id) {
-      deleteDocument(contract?.id);
-      navigate("/contracts");
-      toast({
-        title: "Contract deleted.",
-        description: "Successfully deleted contract.",
-        status: "success",
-        duration: 5000,
-        isClosable: true,
-      });
-    }
-  };
   return (
     <Flex w="100%" justify="center" p={3}>
       <Flex
@@ -84,10 +69,16 @@ export default function ContractSummary() {
           </Button>
 
           <Flex gap={3} flexDir={isSmallScreen ? "column" : "row"}>
-            <Button onClick={() => setIsOpenModal(true)} colorScheme="whatsapp">
+            <Button
+              onClick={() => setIsOpenEditModal(true)}
+              colorScheme="whatsapp"
+            >
               Edit contract
             </Button>
-            <Button onClick={handleDelete} colorScheme="red">
+            <Button
+              onClick={() => setIsOpenDeleteModal(true)}
+              colorScheme="red"
+            >
               Delete contract
             </Button>
           </Flex>
@@ -149,8 +140,14 @@ export default function ContractSummary() {
       </Flex>
 
       <EditContractModal
-        isOpenModal={isOpenModal}
-        setIsOpenModal={() => setIsOpenModal(false)}
+        isOpenEditModal={isOpenEditModal}
+        setIsOpenEditModal={() => setIsOpenEditModal(false)}
+        contract={contract}
+      />
+
+      <DeleteContractModal
+        isOpenDeleteModal={isOpenDeleteModal}
+        setIsOpenDeleteModal={() => setIsOpenDeleteModal(false)}
         contract={contract}
       />
     </Flex>

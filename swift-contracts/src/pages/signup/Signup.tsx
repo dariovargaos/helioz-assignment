@@ -62,13 +62,10 @@ export default function Signup() {
               </InputLeftElement>
               <Input
                 {...register("email", {
-                  required: {
-                    value: true,
-                    message: "Email is required.",
-                  },
+                  required: "Email is required.",
                   pattern: {
                     value: /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/,
-                    message: "Invalid email address",
+                    message: "Invalid email address.",
                   },
                 })}
                 type="email"

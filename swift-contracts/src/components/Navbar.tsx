@@ -63,7 +63,7 @@ export default function Navbar() {
             {!isPending ? (
               <Button onClick={logout}>Logout</Button>
             ) : (
-              <Button isLoading></Button>
+              <Button isLoading />
             )}
           </Flex>
         ) : (

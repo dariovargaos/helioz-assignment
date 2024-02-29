@@ -64,13 +64,7 @@ export const useFirestore = (collectionName: string) => {
       queryClient.invalidateQueries({ queryKey: [collectionName] });
     },
     onError: (error) => {
-      toast({
-        title: "Error",
-        description: `An error occurred: ${error.message}`,
-        status: "error",
-        duration: 5000,
-        isClosable: true,
-      });
+      console.log("Error: ", error);
     },
   });
 
@@ -88,13 +82,7 @@ export const useFirestore = (collectionName: string) => {
       queryClient.invalidateQueries({ queryKey: [collectionName] });
     },
     onError: (error) => {
-      toast({
-        title: "Error",
-        description: `An error occurred: ${error.message}`,
-        status: "error",
-        duration: 5000,
-        isClosable: true,
-      });
+      console.log("Error: ", error);
     },
   });
 
@@ -118,13 +106,7 @@ export const useFirestore = (collectionName: string) => {
       });
     },
     onError: (error) => {
-      toast({
-        title: "Error",
-        description: `An error occurred: ${error.message}`,
-        status: "error",
-        duration: 5000,
-        isClosable: true,
-      });
+      console.log("Error: ", error);
     },
   });
 

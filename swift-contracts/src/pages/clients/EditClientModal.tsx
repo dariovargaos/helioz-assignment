@@ -216,7 +216,7 @@ export default function EditClientModal({
                 Submit
               </Button>
             ) : (
-              <Button isLoading colorScheme="blackAlpha"></Button>
+              <Button isLoading colorScheme="blackAlpha" />
             )}
           </form>
         </ModalBody>

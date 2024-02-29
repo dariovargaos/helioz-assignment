@@ -167,7 +167,7 @@ export default function AddClientModal({
                   required: "Email is required.",
                   pattern: {
                     value: /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/,
-                    message: "Invalid email address",
+                    message: "Invalid email address.",
                   },
                 })}
                 type="email"
@@ -197,7 +197,7 @@ export default function AddClientModal({
                 Submit
               </Button>
             ) : (
-              <Button isLoading colorScheme="blackAlpha"></Button>
+              <Button isLoading colorScheme="blackAlpha" />
             )}
           </form>
         </ModalBody>

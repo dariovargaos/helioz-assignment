@@ -4,6 +4,7 @@ import Select from "react-select";
 import { useFirestore } from "../../hooks/useFirestore";
 import { timestamp } from "../../firebase/config";
 import { useCollection } from "../../hooks/useCollection";
+import { DocumentData } from "firebase/firestore";
 import { useCustomToast } from "../../hooks/useCustomToast";
 import {
   Button,
@@ -25,9 +26,7 @@ import {
   Textarea,
   Text,
   useBreakpointValue,
-  useToast,
 } from "@chakra-ui/react";
-import { DocumentData } from "firebase/firestore";
 
 interface Client {
   id: string;
@@ -45,9 +44,9 @@ interface SelectOption {
   label: string;
 }
 
-interface ContractModalProps {
-  isOpenModal: boolean;
-  setIsOpenModal: () => void;
+interface EditContractModalProps {
+  isOpenEditModal: boolean;
+  setIsOpenEditModal: () => void;
   contract: DocumentData | null | undefined;
 }
 
@@ -61,10 +60,10 @@ interface ContractFormData {
 }
 
 export default function EditContractModal({
-  isOpenModal,
-  setIsOpenModal,
+  isOpenEditModal,
+  setIsOpenEditModal,
   contract,
-}: ContractModalProps) {
+}: EditContractModalProps) {
   const [selectOptions, setSelectOptions] = useState<SelectOption[]>([]);
   const [isPending, setIsPending] = useState<boolean>(false);
   const { updateDocument } = useFirestore("contracts");
@@ -95,7 +94,7 @@ export default function EditContractModal({
   //close modal and reset fields
   const closeModal = () => {
     reset();
-    setIsOpenModal();
+    setIsOpenEditModal();
 
     setValue("contractDurationNumber", 1);
     setValue("contractDurationInUnit", null);
@@ -113,7 +112,7 @@ export default function EditContractModal({
 
   //setting contract data from firestore as default values in edit form
   useEffect(() => {
-    if (isOpenModal) {
+    if (isOpenEditModal) {
       const formattedClients = contract?.assignedClientsList.map(
         (client: AssignedClients) => ({
           value: client.id,
@@ -143,7 +142,7 @@ export default function EditContractModal({
       setValue("contractDurationNumber", durationNumber);
       setValue("contractDurationInUnit", durationUnitSelectOption);
     }
-  }, [isOpenModal, contract, setValue]);
+  }, [isOpenEditModal, contract, setValue]);
 
   const onSubmit = async (data: ContractFormData) => {
     setIsPending(true);
@@ -189,7 +188,7 @@ export default function EditContractModal({
     }
   };
   return (
-    <Modal isOpen={isOpenModal} onClose={closeModal} isCentered>
+    <Modal isOpen={isOpenEditModal} onClose={closeModal} isCentered>
       <ModalOverlay />
       <ModalContent w={isSmallScreen ? "90%" : ""}>
         <ModalHeader>Edit Contract</ModalHeader>
@@ -304,7 +303,7 @@ export default function EditContractModal({
                 Submit
               </Button>
             ) : (
-              <Button isLoading colorScheme="blackAlpha"></Button>
+              <Button isLoading colorScheme="blackAlpha" />
             )}
           </form>
         </ModalBody>

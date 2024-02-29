@@ -1,15 +1,13 @@
 import { useState } from "react";
-import { Link as RouterLink } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useCollection } from "../../hooks/useCollection";
 import {
   Box,
   Button,
   Card,
-  CardHeader,
   CardBody,
   CardFooter,
   Flex,
-  Link,
   SimpleGrid,
   Text,
   Heading,
@@ -20,18 +18,14 @@ import {
   useBreakpointValue,
   InputGroup,
   InputLeftElement,
+  Stack,
 } from "@chakra-ui/react";
 
 //components
 import AddContractModal from "./AddContractModal";
 
 //icons
-import {
-  AddIcon,
-  Search2Icon,
-  SmallAddIcon,
-  PlusSquareIcon,
-} from "@chakra-ui/icons";
+import { AddIcon, Search2Icon } from "@chakra-ui/icons";
 
 interface Contract {
   assignedClientList: Array<{ id: string; name: string }>;
@@ -62,6 +56,8 @@ export default function Contracts() {
   };
 
   console.log(contracts);
+
+  const navigate = useNavigate();
 
   const toggleSortDirection = () => {
     setSortDirection((prevDirection) =>
@@ -205,27 +201,24 @@ export default function Contracts() {
         )}
         <SimpleGrid spacing={8} minChildWidth="250px">
           {filteredContracts?.map((contract) => (
-            <Link
-              as={RouterLink}
+            <Card
               key={contract.id}
-              to={`/contracts/${contract.id}`}
-              _hover={{ textDecoration: "none" }}
+              onClick={() => navigate(`/contracts/${contract.id}`)}
+              _hover={{ cursor: "pointer" }}
             >
-              <Card wordBreak="break-word">
-                <CardHeader>
+              <CardBody>
+                <Stack>
                   <Heading size="md">{contract.name}</Heading>
-                </CardHeader>
-                <CardBody>
                   <Text>
                     Date created: {contract.createdAt.toDate().toDateString()}
                   </Text>
-                </CardBody>
-                <Divider />
-                <CardFooter>
-                  <Text>{contract.details.substring(0, 100)}...</Text>
-                </CardFooter>
-              </Card>
-            </Link>
+                </Stack>
+              </CardBody>
+              <Divider />
+              <CardFooter>
+                <Text>{contract.details.substring(0, 100)}...</Text>
+              </CardFooter>
+            </Card>
           ))}
         </SimpleGrid>
       </Box>
