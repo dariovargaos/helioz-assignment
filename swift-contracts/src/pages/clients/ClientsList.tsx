@@ -1,18 +1,20 @@
 import { useState } from "react";
-import { useFirestore } from "../../hooks/useFirestore";
-import { useCustomToast } from "../../hooks/useCustomToast";
 import {
-  Button,
   Flex,
   Grid,
   GridItem,
   Heading,
+  IconButton,
   Text,
   useBreakpointValue,
 } from "@chakra-ui/react";
 
 //components
 import EditClientModal from "./EditClientModal";
+import DeleteClientModal from "./DeleteClientModal";
+
+//icons
+import { EditIcon, DeleteIcon } from "@chakra-ui/icons";
 
 interface Client {
   id: string;
@@ -30,31 +32,9 @@ interface ClientsListProps {
 
 export default function ClientsList({ clients }: ClientsListProps) {
   const [isOpenEditModal, setIsOpenEditModal] = useState<boolean>(false);
+  const [isOpenDeleteModal, setIsOpenDeleteModal] = useState<boolean>(false);
   const [selectedClient, setSelectedClient] = useState<Client | null>(null);
-  const { deleteDocument } = useFirestore("clients");
-  const customToast = useCustomToast();
 
-  const handleEdit = (client: Client) => {
-    setIsOpenEditModal(true);
-    setSelectedClient(client);
-  };
-
-  const handleDelete = (id: string) => {
-    try {
-      deleteDocument(id);
-      customToast({
-        title: "Client deleted.",
-        description: "Successfully deleted client.",
-        status: "success",
-      });
-    } catch (error) {
-      customToast({
-        title: "Error deleting client.",
-        description: "Something went wrong.",
-        status: "error",
-      });
-    }
-  };
   const isSmallScreen = useBreakpointValue({
     base: true,
     md: false,
@@ -85,22 +65,27 @@ export default function ClientsList({ clients }: ClientsListProps) {
               </Flex>
 
               <Flex flexDir="column">
-                <Button
-                  onClick={() => handleEdit(client)}
-                  size="sm"
+                <IconButton
+                  onClick={() => {
+                    setSelectedClient(client);
+                    setIsOpenEditModal(true);
+                  }}
+                  aria-label="Edit client"
+                  title="Edit"
                   colorScheme="whatsapp"
-                  variant="ghost"
-                >
-                  Edit Client
-                </Button>
-                <Button
-                  onClick={() => handleDelete(client.id)}
-                  size="sm"
+                  icon={<EditIcon />}
+                />
+
+                <IconButton
+                  onClick={() => {
+                    setSelectedClient(client);
+                    setIsOpenDeleteModal(true);
+                  }}
+                  aria-label="Delete client"
+                  title="Delete"
                   colorScheme="red"
-                  variant="ghost"
-                >
-                  Delete Client
-                </Button>
+                  icon={<DeleteIcon />}
+                />
               </Flex>
             </Flex>
           ) : (
@@ -125,22 +110,29 @@ export default function ClientsList({ clients }: ClientsListProps) {
 
               <GridItem>
                 <Flex gap={2}>
-                  <Button
-                    onClick={() => handleEdit(client)}
-                    size="sm"
+                  <IconButton
+                    onClick={() => {
+                      setSelectedClient(client);
+                      setIsOpenEditModal(true);
+                    }}
+                    aria-label="Edit client"
+                    title="Edit"
                     colorScheme="whatsapp"
                     variant="ghost"
-                  >
-                    Edit
-                  </Button>
-                  <Button
-                    onClick={() => deleteDocument(client.id)}
-                    size="sm"
+                    icon={<EditIcon />}
+                  />
+
+                  <IconButton
+                    onClick={() => {
+                      setSelectedClient(client);
+                      setIsOpenDeleteModal(true);
+                    }}
+                    aria-label="Delete client"
+                    title="Delete"
                     colorScheme="red"
                     variant="ghost"
-                  >
-                    Delete
-                  </Button>
+                    icon={<DeleteIcon />}
+                  />
                 </Flex>
               </GridItem>
             </>
@@ -151,6 +143,12 @@ export default function ClientsList({ clients }: ClientsListProps) {
       <EditClientModal
         isOpenEditModal={isOpenEditModal}
         setIsOpenEditModal={() => setIsOpenEditModal(false)}
+        client={selectedClient}
+      />
+
+      <DeleteClientModal
+        isOpenDeleteModal={isOpenDeleteModal}
+        setIsOpenDeleteModal={() => setIsOpenDeleteModal(false)}
         client={selectedClient}
       />
     </>

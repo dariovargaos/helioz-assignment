@@ -84,10 +84,7 @@ export default function Signup() {
               </InputLeftElement>
               <Input
                 {...register("password", {
-                  required: {
-                    value: true,
-                    message: "Password is required.",
-                  },
+                  required: "Password is required.",
                 })}
                 type={showPassword ? "text" : "password"}
                 color="gray.500"
@@ -114,10 +111,7 @@ export default function Signup() {
               </InputLeftElement>
               <Input
                 {...register("displayName", {
-                  required: {
-                    value: true,
-                    message: "Display name is required.",
-                  },
+                  required: "Display name is required.",
                 })}
                 type="text"
                 color="gray.500"

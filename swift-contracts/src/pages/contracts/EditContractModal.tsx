@@ -244,6 +244,9 @@ export default function EditContractModal({
                 <Controller
                   name="contractDurationNumber"
                   control={control}
+                  rules={{
+                    required: "Select number for duration.",
+                  }}
                   defaultValue={1}
                   render={({ field }) => (
                     <NumberInput {...field} min={1} max={100}>
@@ -287,10 +290,7 @@ export default function EditContractModal({
               <FormLabel>Contract details</FormLabel>
               <Textarea
                 {...register("contractDetails", {
-                  required: {
-                    value: true,
-                    message: "Please enter contract details.",
-                  },
+                  required: "Enter contract details.",
                 })}
                 rows={5}
               />

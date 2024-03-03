@@ -75,10 +75,7 @@ export default function Login() {
               </InputLeftElement>
               <Input
                 {...register("password", {
-                  required: {
-                    value: true,
-                    message: "Password is required.",
-                  },
+                  required: "Password is required.",
                 })}
                 type={showPassword ? "text" : "password"}
                 color="gray.500"

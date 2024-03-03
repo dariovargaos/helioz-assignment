@@ -14,7 +14,6 @@ import {
   CollectionReference,
   updateDoc,
 } from "firebase/firestore";
-import { useToast } from "@chakra-ui/react";
 
 interface DocumentData {
   [key: string]: any;
@@ -34,7 +33,6 @@ interface UpdateDocumentParams {
 }
 
 export const useFirestore = (collectionName: string) => {
-  const toast = useToast();
   const queryClient = useQueryClient();
   const { user } = useAuthContext();
 

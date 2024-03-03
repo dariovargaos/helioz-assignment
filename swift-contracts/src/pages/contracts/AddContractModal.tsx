@@ -163,10 +163,7 @@ export default function AddContractModal({
               <FormLabel>Contract name</FormLabel>
               <Input
                 {...register("contractName", {
-                  required: {
-                    value: true,
-                    message: "Contract name is required.",
-                  },
+                  required: "Contract name is required.",
                 })}
                 type="text"
               />
@@ -211,6 +208,9 @@ export default function AddContractModal({
                 <Controller
                   name="contractDurationNumber"
                   control={control}
+                  rules={{
+                    required: "Number is required.",
+                  }}
                   defaultValue={1}
                   render={({ field }) => (
                     <NumberInput {...field} min={1} max={100}>
@@ -229,7 +229,7 @@ export default function AddContractModal({
                   name="contractDurationInUnit"
                   control={control}
                   rules={{
-                    required: "Please select day(s), month(s) or year(s).",
+                    required: "Select day(s), month(s) or year(s).",
                   }}
                   render={({ field }) => (
                     <Select
@@ -254,10 +254,7 @@ export default function AddContractModal({
               <FormLabel>Contract details</FormLabel>
               <Textarea
                 {...register("contractDetails", {
-                  required: {
-                    value: true,
-                    message: "Please enter contract details.",
-                  },
+                  required: "Enter contract details.",
                 })}
                 rows={5}
               />

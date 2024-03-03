@@ -6,13 +6,14 @@ import {
   Divider,
   Flex,
   Heading,
+  IconButton,
   Progress,
   Text,
   useBreakpointValue,
 } from "@chakra-ui/react";
 
 //icons
-import { ArrowBackIcon } from "@chakra-ui/icons";
+import { ArrowBackIcon, EditIcon, DeleteIcon } from "@chakra-ui/icons";
 
 //components
 import EditContractModal from "./EditContractModal";
@@ -69,18 +70,20 @@ export default function ContractSummary() {
           </Button>
 
           <Flex gap={3} flexDir={isSmallScreen ? "column" : "row"}>
-            <Button
+            <IconButton
               onClick={() => setIsOpenEditModal(true)}
+              aria-label="Edit contract"
+              title="Edit"
+              icon={<EditIcon />}
               colorScheme="whatsapp"
-            >
-              Edit contract
-            </Button>
-            <Button
+            />
+            <IconButton
               onClick={() => setIsOpenDeleteModal(true)}
+              aria-label="Delete contract"
+              title="Delete"
+              icon={<DeleteIcon />}
               colorScheme="red"
-            >
-              Delete contract
-            </Button>
+            />
           </Flex>
         </Flex>
 
